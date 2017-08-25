@@ -135,7 +135,7 @@ end
 
 
 RegisterUnitEvent(3569, 1,  "Bogling_Spawn")
-RegisterUnitEvent(2080, 18,  "Denalan_OnConcludeQuest")
+RegisterUnitEvent(2080, 17,  "Denalan_OnConcludeQuest")
 RegisterUnitEvent(2080, 23,  "Denalan_AIUpdate")
 RegisterUnitEvent(3569, 23,  "Bogling_AIUpdate")
 
