@@ -57,7 +57,7 @@ function Denalan_AIUpdate(Unit, mapScript, timeDiff)
 	if Unit:IsTimerFinished("Home") then
 		Unit:RemoveTimer("Home")
 		Unit:ResetMovement() -- stop waypoints
-		Unit:MoveToLocation(9506.92,713.766,1255.89, 0.279253, true, false, false, false) -- moving back to original spot
+		Unit:MoveToLocation(9506.92,713.766,1255.89, 0.279253, false, false, false, false) -- moving back to original spot
 		Unit:SetEmoteState(26) -- removing the kneel and go back to standing 
 		ENV.bogling1 = tostring(Unit:SpawnCreatureAtPosition(3569, 9503.47, 720.007, 1255.94, 5.80658)) -- spawning the boglings
 		ENV.bogling2 = tostring(Unit:SpawnCreatureAtPosition(3569, 9502.51, 718.025, 1255.94, 5.80658))
@@ -78,6 +78,7 @@ function Bogling_Spawn(Unit)
 	if GuidUnit == ENV.bogling1 then -- making individual timers for each different bogling
 		if ENV.AttackTimer1 == nil then 
 			ENV.AttackTimer1 = true
+			Unit:SendScriptTextById(13, 1175)
 			Unit:CreateTimer("Attack1",1500) -- timer to start combat wth the player
 		end
 	end
@@ -106,6 +107,7 @@ function Bogling_AIUpdate(Unit, mapScript, timeDiff)
 			Unit:SetCanEnterCombat(true) -- activating their ability to enter combat and move
 			Unit:StartCombat(ENV.BogPlayer) -- initiate combat with the correct target
 			ENV.BogPlayer = nil
+			Unit:SendScriptTextById(11, 1176)
 			Unit:Despawn(30000, 0) -- making them despawn if the player doesnt kill them and resets them
 		end
 	end
@@ -139,6 +141,7 @@ RegisterUnitEvent(2080, 17,  "Denalan_OnConcludeQuest")
 RegisterUnitEvent(2080, 23,  "Denalan_AIUpdate")
 RegisterUnitEvent(3569, 23,  "Bogling_AIUpdate")
 
+-- update kt_spell.spellcorrections set attributes = 8388992 where spellid = 22788;
 -- update kt_world.creature_proto set respawntime = 0 where entry = 3569;
 -- update kt_world.creature_proto set scale = 0.15 where entry = 3569;
 -- replace into kt_world.waypoint_script values (158,18,1,0,0,9507.543945,717.882446,1255.885742,0,0,'');
