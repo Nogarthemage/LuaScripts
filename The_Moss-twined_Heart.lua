@@ -20,24 +20,15 @@ function Denalan_OnConcludeQuest(Unit, QuestId, Player)
 		end
 	end
 	if Questid == 930 then
-		Unit:SetNpcFlags(0) -- removing gossip temporarely to avoid overlap of other players starting other scripts
-		Unit:SendScriptTextById(13, 1156) -- emote
-		Unit:CastSpell(Unit, 1804, false) -- dummy spell to take the seeds out of the fruit
-		if ENV.MoveTimer == nil then
-			ENV.MoveTimer = true
-			Unit:CreateTimer("Move",3500) -- creating timer to move to the planter
-		end
-		if ENV.PlantTimer == nil then 
-			ENV.PlantTimer = true
-			Unit:CreateTimer("Plant",6000) -- timer to kneel and plant the seeds
-		end
-		if ENV.HomeTimer == nil then
-			ENV.HomeTimer = true
-			Unit:CreateTimer("Home",8000) -- timer to spurt the seeds into mobs and return home
-		end
 		if ENV.ResetTimer == nil then
 			ENV.ResetTimer = true
 			Unit:CreateTimer("Reset",10000) -- timer to make the npc responsive again for the next script
+			Unit:SetNpcFlags(0) -- removing gossip temporarely to avoid overlap of other players starting other scripts
+			Unit:SendScriptTextById(13, 1156) -- emote
+			Unit:CastSpell(Unit, 1804, false) -- dummy spell to take the seeds out of the fruit
+			Unit:CreateTimer("Move",3500) -- creating timer to move to the planter
+			Unit:CreateTimer("Plant",6000) -- timer to kneel and plant the seeds
+			Unit:CreateTimer("Home",8000) -- timer to spurt the seeds into mobs and return home
 		end
 	end
 end
@@ -53,21 +44,18 @@ function Denalan_AIUpdate(Unit, mapScript, timeDiff)
 	end
 	if Unit:IsTimerFinished("Move") then
 		Unit:RemoveTimer("Move")
-		ENV.MoveTimer = nil
 		Unit:EnterEvadeMode() -- interrupting the mentioned dummy spell
 		Unit:PushWaypointMovement(18) -- moving to the planter
 		Unit:SendScriptTextById(11, 1157) -- emote
 	end
 	if Unit:IsTimerFinished("Plant") then
 		Unit:RemoveTimer("Plant")
-		ENV.PlantTimer = nil
 		Unit:StopMovement() -- stop in front of the planter and not continuemoving between the waypoints
 		Unit:SendScriptTextById(13, 1158) -- emote
 		Unit:SetEmoteState(16) -- kneel and plant
 	end
 	if Unit:IsTimerFinished("Home") then
 		Unit:RemoveTimer("Home")
-		ENV.HomeTimer = nil
 		Unit:ResetMovement() -- stop waypoints
 		Unit:MoveToLocation(9506.92,713.766,1255.89, 0.279253, true, false, false, false) -- moving back to original spot
 		Unit:SetEmoteState(26) -- removing the kneel and go back to standing 
@@ -77,6 +65,7 @@ function Denalan_AIUpdate(Unit, mapScript, timeDiff)
 	end
 	if Unit:IsTimerFinished("Reset") then 
 		Unit:RemoveTimer("Reset")
+		ENV.ResetTimer = nil
 		Unit:SetNpcFlags(2)-- re-activating gossip
 	end
 end
@@ -145,12 +134,10 @@ function Bogling_AIUpdate(Unit, mapScript, timeDiff)
 end
 
 
-RegisterUnitEvent(2080, 17,  "Denalan_OnConcludeQuest")
 RegisterUnitEvent(3569, 1,  "Bogling_Spawn")
 RegisterUnitEvent(2080, 18,  "Denalan_OnConcludeQuest")
 RegisterUnitEvent(2080, 23,  "Denalan_AIUpdate")
 RegisterUnitEvent(3569, 23,  "Bogling_AIUpdate")
-RegisterUnitEvent(3569, 2,  "Bogling_Death")
 
 -- update kt_world.creature_proto set respawntime = 0 where entry = 3569;
 -- update kt_world.creature_proto set scale = 0.15 where entry = 3569;
