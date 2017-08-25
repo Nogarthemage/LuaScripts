@@ -22,7 +22,7 @@ function Denalan_OnConcludeQuest(Unit, QuestId, Player)
 	if Questid == 930 then
 		if ENV.ResetTimer == nil then
 			ENV.ResetTimer = true
-			Unit:CreateTimer("Reset",10000) -- timer to make the npc responsive again for the next script
+			Unit:CreateTimer("Reset",11000) -- timer to make the npc responsive again for the next script
 			Unit:SetNpcFlags(0) -- removing gossip temporarely to avoid overlap of other players starting other scripts
 			Unit:SendScriptTextById(13, 1156) -- emote
 			Unit:CastSpell(Unit, 1804, false) -- dummy spell to take the seeds out of the fruit
@@ -79,19 +79,19 @@ function Bogling_Spawn(Unit)
 		if ENV.AttackTimer1 == nil then 
 			ENV.AttackTimer1 = true
 			Unit:SendScriptTextById(13, 1175)
-			Unit:CreateTimer("Attack1",1500) -- timer to start combat wth the player
+			Unit:CreateTimer("Attack1",2100) -- timer to start combat wth the player
 		end
 	end
 	if GuidUnit == ENV.bogling2 then
 		if ENV.AttackTimer2 == nil then 
 			ENV.AttackTimer2 = true
-			Unit:CreateTimer("Attack2",1500) -- timer to start combat wth the player
+			Unit:CreateTimer("Attack2",2300) -- timer to start combat wth the player
 		end
 	end
 	if GuidUnit == ENV.bogling3	then
 		if ENV.AttackTimer3 == nil then 
 			ENV.AttackTimer3 = true
-			Unit:CreateTimer("Attack3",1500) -- timer to start combat wth the player
+			Unit:CreateTimer("Attack3",1900) -- timer to start combat wth the player
 		end
 	end
 end
