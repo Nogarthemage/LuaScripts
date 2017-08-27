@@ -1,11 +1,12 @@
 --[[
     Benediction Lua Scripts
-    Quest 590 - A Rogue's Deal
+    Quest 5648 - Garments of Spirituality
     Developed by Nogar
 --]]
 
 ENV = {}
 
+-- LUA_EVENT_ON_INITIALIZE_QUEST(16)
 function Calvin_OnInitializeQuest(Unit, QuestId, Player)
 	if ENV.ReturnTimer == nil then -- timer to reset the npc for other or current players to initiate the quest
 		ENV.ReturnTimer = true
