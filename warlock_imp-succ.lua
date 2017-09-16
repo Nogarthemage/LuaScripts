@@ -4,7 +4,9 @@
     Developed by Nogar
 --]]
 
-function BloodSailWarlock_Spawn(Unit)
+local Script = {}
+
+function Script.BloodSailWarlock_Spawn(Unit)
 	local PetRoll = math.random(1, 2)
 	if PetRoll == 1 then
 		Unit:CastSpell(Unit, 23502, false)
@@ -13,4 +15,4 @@ function BloodSailWarlock_Spawn(Unit)
 	end
 end
 
-RegisterUnitEvent(1564, 1,  "BloodSailWarlock_Spawn")
+RegisterUnitEvent(1564, 1, Script.BloodSailWarlock_Spawn)
