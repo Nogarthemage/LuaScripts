@@ -4,7 +4,7 @@
     Developed by Nogar
 --]]
 
-Script = {}
+local Script = {}
 
 function Script.Zenn_OnConcludeQuest(Unit, QuestId, Player)
 	if QuestId == 489 then
