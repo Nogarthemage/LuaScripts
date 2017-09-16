@@ -19,7 +19,7 @@ function Denalan_OnConcludeQuest(Unit, QuestId, Player)
 			Unit:CreateTimer("Emote",4000)
 		end
 	end
-	if Questid == 930 then
+	if QuestId == 930 then
 		if ENV.ResetTimer == nil then
 			ENV.ResetTimer = true
 			Unit:CreateTimer("Reset",10000) -- timer to make the npc responsive again for the next script
