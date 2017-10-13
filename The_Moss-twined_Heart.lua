@@ -124,7 +124,7 @@ function Script.Bogling_AIUpdate(Unit, mapScript, timeDiff)
 	end
 	if GuidUnit == Script.bogling3 then
 		if Unit:IsTimerFinished("Attack3") then
-			Unit:RemoveTimer("Attack2")
+			Unit:RemoveTimer("Attack3")
 			Script.AttackTimer3 = nil
 			Script.bogling3 = nil
 			Unit:SetCanEnterCombat(true)
