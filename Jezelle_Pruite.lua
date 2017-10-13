@@ -7,10 +7,11 @@
 local Script = {}
 
 function Script.Jezelle_Update(Unit, mapScript, timeDiff)
-	if Script.initialize == nil then
+	if Script.Initialize == nil then
 		Script.Adrian = Unit:GetCreatureBySqlId(36649)
 		Script.Winifred = Unit:GetCreatureBySqlId(36305)
 		Script.Victor = Unit:GetCreatureBySqlId(36644)
+		Script.Initialize = true
 	end
 	if Script.StartEvent == nil then
 		Script.SpellCounter = 0
@@ -90,7 +91,11 @@ function Script.Jezelle_Update(Unit, mapScript, timeDiff)
 			Script.Winifred:SendEmote(21)
 			Script.Victor:SendEmote(21)
 			Unit:CreateTimer("EndAndStart",120000)
+			Script.StartEvent = false
 		end
+	end
+	if Script.StartEvent == false then
+		Unit:UpdateTimers(timeDiff)
 		if Unit:IsTimerFinished("EndAndStart") then
 			Unit:RemoveTimer("EndAndStart")
 			Script.StartEvent = nil
