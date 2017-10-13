@@ -148,13 +148,14 @@ SQL ------
 
 Replace into kt_world.creature_proto values(11,40,40,35,3116,3116,0,0,1,0,2000,0,4,9,10,0,0,100,2200,1,2,0,0,0,360000,15,15,0,0,0,0,0,0,0,0,0,0,0,128,3,0,1);
 Replace into kt_world.creature_proto values(7,4,4,35,166,166,85,85,0.6,0,2000,0,3,6,8,3,0,100,2000,8,11,0,0,0,360000,20,20,0,0,0,0,0,0,0,0,0,0,0,128,3,0,1);
-Replace into kt_world.creature_proto values(8,10,10,35,548,548,300,300,1,0,2000,0,8,15,19,0,0,100,2000,23,31,0,0,0,360000,20,20,0,0,0,0,0,0,0,0,0,0,0,128,1,0,1);
-Replace into kt_world.creature_proto values(9,20,20,35,1456,1456,1630,1666,1,0,2000,0,58,94,127,0,0,100,2000,74,102,0,0,0,360000,3327,3327,0,0,0,0,0,0,0,0,0,0,0,128,1,0,1);
-Replace into kt_world.creature_proto values(10,30,30,35,2666,2666,436,436,1,0,2000,0,13,24,31,0,0,100,2000,31,43,0,0,0,360000,712,712,0,0,0,0,0,0,0,0,0,0,0,128,1,0,1);
+Replace into kt_world.creature_proto values(8,10,10,35,548,548,300,300,0.9,0,2000,0,8,15,19,0,0,100,2000,23,31,0,0,0,360000,20,20,0,0,0,0,0,0,0,0,0,0,0,128,1,0,1);
+Replace into kt_world.creature_proto values(10,30,30,35,2666,2666,1630,1666,0.85,0,2000,0,58,94,127,0,0,100,2000,74,102,0,0,0,360000,3327,3327,0,0,0,0,0,0,0,0,0,0,0,128,1,0,1);
+Replace into kt_world.creature_proto values(9,20,20,35,1456,1456,436,436,1,0,2000,0,13,24,31,0,0,100,2000,31,43,0,0,0,360000,712,712,0,0,0,0,0,0,0,0,0,0,0,128,1,0,1);
 
 Replace into kt_world.creature_names values(11,'Felsteed','',0,3,0,0,0,2346,0,0,0,0,0,4044);
 Replace into kt_world.creature_names values(7,'Imp','',0,3,23,0,0,4449,0,0,0,0,0,4044);
 Replace into kt_world.creature_names values(8,'Voidwalker','',0,3,16,0,0,1132,0,0,0,0,0,4044);
-Replace into kt_world.creature_names values(9,'Felhunter','',0,3,15,0,0,850,0,0,0,0,0,4044);
-Replace into kt_world.creature_names values(10,'Succubus','',0,3,17,0,0,4162,0,0,0,0,0,4044);
+Replace into kt_world.creature_names values(10,'Felhunter','',0,3,15,0,0,850,0,0,0,0,0,4044);
+Replace into kt_world.creature_names values(9,'Succubus','',0,3,17,0,0,4162,0,0,0,0,0,4044);
+
 --]]
