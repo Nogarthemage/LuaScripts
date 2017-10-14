@@ -7,13 +7,13 @@
 local Script = {}
 
 function Script.Jezelle_Update(Unit, mapScript, timeDiff)
-	if Script.Initialize == nil then
-		Script.Adrian = Unit:GetCreatureBySqlId(36649)
-		Script.Winifred = Unit:GetCreatureBySqlId(36305)
-		Script.Victor = Unit:GetCreatureBySqlId(36644)
-		Script.Initialize = true
-	end
 	if Script.StartEvent == nil then
+		if Script.Adrian ~= nil or Script.Winifred ~= nil or Script.Victor ~= nil then
+			Script.Adrian = Unit:GetCreatureBySqlId(36649)
+			Script.Winifred = Unit:GetCreatureBySqlId(36305)
+			Script.Victor = Unit:GetCreatureBySqlId(36644)
+			Script.Initialize = true
+		end
 		Script.SpellCounter = 0
 		Unit:SendScriptTextById(11, 2049)
 		Unit:SendEmote(1)
@@ -125,7 +125,7 @@ function Script.Jezelle_OnSpellCast(Unit, Spell, Target)
 	end
 end
 
-RegisterUnitEvent(5702, 1, Script.Jezelle_Spawn)
+--RegisterUnitEvent(5702, 1, Script.Jezelle_Spawn)
 RegisterUnitEvent(5702, 23, Script.Jezelle_Update)
 RegisterUnitEvent(5702, 8, Script.Jezelle_OnSpellCast)
 
