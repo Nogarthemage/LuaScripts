@@ -36,7 +36,7 @@ function Script.Denalan_OnConcludeQuest(Unit, QuestId, Player)
 end
 
 function Script.Denalan_AIUpdate(Unit, mapScript, timeDiff)
-	if Script.active == true
+	if Script.Active == true then
 		Unit:UpdateTimers(timeDiff) -- updating timers
 		if Unit:IsTimerFinished("Emote") then
 			Unit:RemoveTimer("Emote")
@@ -105,7 +105,7 @@ end
 
 function Script.Bogling_AIUpdate(Unit, mapScript, timeDiff)
 	local GuidUnit = tostring(Unit)
-	if ScriptBActive == true
+	if ScriptBActive == true then
 		Unit:UpdateTimers(timeDiff)
 		if GuidUnit == Script.bogling1 then
 			if Unit:IsTimerFinished("Attack1") then
