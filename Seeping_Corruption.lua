@@ -11,6 +11,7 @@ function Script.Thersa_OnConcludeQuest(Unit, QuestId, Player)
 	Unit:CreateTimer("Emote",3000)
 	Unit:CastSpell(Unit,6355,false)
 	Script.UpdateCheck = true
+	Unit:SetNpcFlags(0)
 end
 
 function Script.Thersa_AIUpdate(Unit, mapScript, timeDiff)
@@ -29,6 +30,7 @@ function Script.Thersa_AIUpdate(Unit, mapScript, timeDiff)
 			Unit:RemoveTimer("Despawn")
 			Script.UpdateCheck = nil
 			Unit:Despawn(10000,5000)
+			Unit:SetNpcFlags(2)
 		end
 	end
 end

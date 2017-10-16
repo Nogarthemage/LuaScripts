@@ -164,5 +164,5 @@ update kt_world.creature_names set name = 'Toad' where entry = 5742;
 update kt_world.creature_names set name = 'Skittish Rabbit' where entry = 5741;
 update kt_world.creature_names set name = 'Wooly Sheep' where entry = 5743;
 Update kt_world.creature_proto set equipitem0 = 2198  where entry = 5734;
-delete from kt_world.creature_spawns where entry = 5736;
+delete from kt_world.creature_spawns where id = 42978;
 --]]

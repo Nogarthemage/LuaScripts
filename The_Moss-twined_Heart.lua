@@ -81,7 +81,7 @@ function Script.Bogling_Spawn(Unit)
 	local GuidUnit = tostring(Unit)
 	Unit:SetCanEnterCombat(false) -- making them stand still and not enter combat while they grow
 	Unit:CastSpell(Unit, 22788, false) -- grow
-	Unit:CastSpell(Unit, 22788, false) -- grow even more
+	-- Unit:CastSpell(Unit, 22788, false) -- grow even more
 	if GuidUnit == Script.bogling1 then -- making individual timers for each different bogling
 		if Script.AttackTimer1 == nil then 
 			Script.AttackTimer1 = true

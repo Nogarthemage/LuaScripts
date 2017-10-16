@@ -33,7 +33,7 @@ function Script.Balos_OnDamageTaken(Unit, Attacker, Amount)
 		Unit:SetCanEnterCombat(false) 
 		Unit:RemoveAllNegativeAuras() -- remove DoTs and other debuffs to prevent abuse
 		Unit:RemoveAllNonPassiveAuras() -- safety precautions
-		Unit:SetTemporaryFaction(1077) -- turn him back into friendly
+		Unit:SetTemporaryFaction(1077) -- turn him into friendly
 		Unit:SetHealthPct(100) -- heal him to 100% HP
 		Unit:SetNpcFlags(2) -- Add gossip capabilites 
 		Unit:SendScriptTextById(11, 1756)
