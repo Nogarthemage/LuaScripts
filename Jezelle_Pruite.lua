@@ -6,14 +6,20 @@
 
 local Script = {}
 
+function Script.Adrian_OnSpawn(Unit)
+	Script.Adrian = Unit:GetCreatureBySqlId(36649)
+end
+
+function Script.Winifred_OnSpawn(Unit)
+	Script.Winifred = Unit:GetCreatureBySqlId(36305)
+end
+
+function Script.Victor_OnSpawn(Unit)
+	Script.Victor = Unit:GetCreatureBySqlId(36644)
+end
+
 function Script.Jezelle_Update(Unit, mapScript, timeDiff)
 	if Script.StartEvent == nil then
-		if Script.Adrian ~= nil or Script.Winifred ~= nil or Script.Victor ~= nil then
-			Script.Adrian = Unit:GetCreatureBySqlId(36649)
-			Script.Winifred = Unit:GetCreatureBySqlId(36305)
-			Script.Victor = Unit:GetCreatureBySqlId(36644)
-			Script.Initialize = true
-		end
 		Script.SpellCounter = 0
 		Unit:SendScriptTextById(11, 2049)
 		Unit:SendEmote(1)
@@ -105,21 +111,21 @@ end
 
 function Script.Jezelle_OnSpellCast(Unit, Spell, Target)
 	if Script.SpellCounter == 0 then
-		Script.Imp = Unit:SpawnCreatureAtPosition(7,1793.282104,128.850159,-63.843094, 3.6)
+		Script.Imp = Unit:SpawnCreatureAtPosition(5730,1793.282104,128.850159,-63.843094, 3.6)
 		Script.SpellCounter = Script.SpellCounter + 1
 	elseif Script.SpellCounter == 1 then
-		Script.Void = Unit:SpawnCreatureAtPosition(8,1793.282104,128.850159,-63.843094, 3.6)
+		Script.Void = Unit:SpawnCreatureAtPosition(5729,1793.282104,128.850159,-63.843094, 3.6)
 		Script.SpellCounter = Script.SpellCounter + 1
 	elseif Script.SpellCounter == 2 then
-		Script.Succ = Unit:SpawnCreatureAtPosition(9,1793.282104,128.850159,-63.843094, 3.6)
+		Script.Succ = Unit:SpawnCreatureAtPosition(5728,1793.282104,128.850159,-63.843094, 3.6)
 		Script.Adrian:SendEmote(4)
 		Script.Victor:SendEmote(24)
 		Script.SpellCounter = Script.SpellCounter + 1
 	elseif Script.SpellCounter == 3 then
-		Script.Hunter = Unit:SpawnCreatureAtPosition(10,1793.282104,128.850159,-63.843094, 3.6)
+		Script.Hunter = Unit:SpawnCreatureAtPosition(5726,1793.282104,128.850159,-63.843094, 3.6)
 		Script.SpellCounter = Script.SpellCounter + 1
 	elseif Script.SpellCounter == 4 then
-		Script.Steed = Unit:SpawnCreatureAtPosition(11,1793.282104,128.850159,-63.843094, 3.6)
+		Script.Steed = Unit:SpawnCreatureAtPosition(5727,1793.282104,128.850159,-63.843094, 3.6)
 		Script.Winifred:SendEmote(5)
 		Script.SpellCounter = Script.SpellCounter + 1
 	end
@@ -128,6 +134,9 @@ end
 --RegisterUnitEvent(5702, 1, Script.Jezelle_Spawn)
 RegisterUnitEvent(5702, 23, Script.Jezelle_Update)
 RegisterUnitEvent(5702, 8, Script.Jezelle_OnSpellCast)
+RegisterUnitEvent(5704, 1, Script.Adrian_OnSpawn)
+RegisterUnitEvent(5703, 1, Script.Winifred_OnSpawn)
+RegisterUnitEvent(5705, 1, Script.Victor_OnSpawn)
 
 --[[
 2049	33	If you're here, then it means you are prepared to begin the study of summoning demonic cohorts to do your bidding. We will start with the lowliest creatures you will be able to call and continue from there. Let us begin.
@@ -146,16 +155,8 @@ RegisterUnitEvent(5702, 8, Script.Jezelle_OnSpellCast)
 
 SQL ------
 
-Replace into kt_world.creature_proto values(11,40,40,35,3116,3116,0,0,1,0,2000,0,4,9,10,0,0,100,2200,1,2,0,0,0,360000,15,15,0,0,0,0,0,0,0,0,0,0,0,128,3,0,1);
-Replace into kt_world.creature_proto values(7,4,4,35,166,166,85,85,0.6,0,2000,0,3,6,8,3,0,100,2000,8,11,0,0,0,360000,20,20,0,0,0,0,0,0,0,0,0,0,0,128,3,0,1);
-Replace into kt_world.creature_proto values(8,10,10,35,548,548,300,300,0.9,0,2000,0,8,15,19,0,0,100,2000,23,31,0,0,0,360000,20,20,0,0,0,0,0,0,0,0,0,0,0,128,1,0,1);
-Replace into kt_world.creature_proto values(10,30,30,35,2666,2666,1630,1666,0.85,0,2000,0,58,94,127,0,0,100,2000,74,102,0,0,0,360000,3327,3327,0,0,0,0,0,0,0,0,0,0,0,128,1,0,1);
-Replace into kt_world.creature_proto values(9,20,20,35,1456,1456,436,436,1,0,2000,0,13,24,31,0,0,100,2000,31,43,0,0,0,360000,712,712,0,0,0,0,0,0,0,0,0,0,0,128,1,0,1);
-
-Replace into kt_world.creature_names values(11,'Felsteed','',0,3,0,0,0,2346,0,0,0,0,0,4044);
-Replace into kt_world.creature_names values(7,'Imp','',0,3,23,0,0,4449,0,0,0,0,0,4044);
-Replace into kt_world.creature_names values(8,'Voidwalker','',0,3,16,0,0,1132,0,0,0,0,0,4044);
-Replace into kt_world.creature_names values(10,'Felhunter','',0,3,15,0,0,850,0,0,0,0,0,4044);
-Replace into kt_world.creature_names values(9,'Succubus','',0,3,17,0,0,4162,0,0,0,0,0,4044);
+update kt_world.creature_proto set scale = 0.9 where entry = 5729;
+update kt_world.creature_proto set scale = 0.8 where entry = 5726;
+update kt_world.creature_proto set scale = 1.1 where entry = 5728;
 
 --]]
