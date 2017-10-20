@@ -18,7 +18,7 @@ function Script.Keever_Update(Unit, mapScript, timeDiff)
 	end
 	if Script.StartEvent == true then
 		Unit:UpdateTimers(timeDiff)
-		if Script.Part == 1 then
+		if Script.Part2 == nil then
 			if Unit:IsTimerFinished("FirstVialEmote") then
 				Unit:RemoveTimer("FirstVialEmote")
 				Unit:SendScriptTextById(11, 2062)
@@ -31,7 +31,9 @@ function Script.Keever_Update(Unit, mapScript, timeDiff)
 				Unit:CreateTimer("TurnFrog",2000)
 			elseif Unit:IsTimerFinished("TurnFrog") then
 				Unit:RemoveTimer("TurnFrog")
-				Script.Caged:SwapCreatureEntry(5742, true)
+				if Script.Caged ~= nil then 
+					Script.Caged:SwapCreatureEntry(5742, true)
+				end
 				Unit:CreateTimer("PokeFrog",5000)
 			elseif Unit:IsTimerFinished("PokeFrog") then
 				Unit:RemoveTimer("PokeFrog")
@@ -51,7 +53,9 @@ function Script.Keever_Update(Unit, mapScript, timeDiff)
 				Unit:CreateTimer("TurnSquirrel",3000)
 			elseif Unit:IsTimerFinished("TurnSquirrel") then
 				Unit:RemoveTimer("TurnSquirrel")
-				Script.Caged:SwapCreatureEntry(5739, true)
+				if Script.Caged ~= nil then 
+					Script.Caged:SwapCreatureEntry(5739, true)
+				end
 				Unit:CreateTimer("PokeSquirrel",5000)
 			elseif Unit:IsTimerFinished("PokeSquirrel") then
 				Unit:RemoveTimer("PokeSquirrel")
@@ -69,12 +73,13 @@ function Script.Keever_Update(Unit, mapScript, timeDiff)
 				Unit:CreateTimer("TurnRabbit",3000)
 			elseif Unit:IsTimerFinished("TurnRabbit") then
 				Unit:RemoveTimer("TurnRabbit")
-				Script.Caged:SwapCreatureEntry(5741, true)
+				if Script.Caged ~= nil then 
+					Script.Caged:SwapCreatureEntry(5741, true)
+				end
 				Unit:CreateTimer("PokeRabbit",5000)
-				Script.Part = 2
+				Script.Part2 = true
 			end
-		end
-		if Script.Part == 2 then
+		else
 			if Unit:IsTimerFinished("PokeRabbit") then
 				Unit:RemoveTimer("PokeRabbit")
 				Unit:SendScriptTextById(13, 2069)
@@ -92,7 +97,9 @@ function Script.Keever_Update(Unit, mapScript, timeDiff)
 				Unit:CreateTimer("TurnSheep",3000)
 			elseif Unit:IsTimerFinished("TurnSheep") then
 				Unit:RemoveTimer("TurnSheep")
-				Script.Caged:SwapCreatureEntry(5743, true)
+				if Script.Caged ~= nil then 
+					Script.Caged:SwapCreatureEntry(5743, true)
+				end
 				Unit:CreateTimer("AngrySheep",2000)
 			elseif Unit:IsTimerFinished("AngrySheep") then
 				Unit:RemoveTimer("AngrySheep")
@@ -105,15 +112,21 @@ function Script.Keever_Update(Unit, mapScript, timeDiff)
 				Unit:CreateTimer("Explode",3000)
 			elseif Unit:IsTimerFinished("Explode") then
 				Unit:RemoveTimer("Explode")
-				Script.Caged:CastSpell(Script.Caged,7670,false)
+				if Script.Caged ~= nil then 
+					Script.Caged:CastSpell(Script.Caged,7670,false)
+				end
 				Unit:CreateTimer("KillSheep",500)
 			elseif Unit:IsTimerFinished("KillSheep") then
 				Unit:RemoveTimer("KillSheep")
-				Script.Caged:Suicide()
+				if Script.Caged ~= nil then 
+					Script.Caged:Suicide()
+				end
 				Unit:CreateTimer("Pleased",4000)
 			elseif Unit:IsTimerFinished("Pleased") then
 				Unit:RemoveTimer("Pleased")
-				Script.Caged:Despawn(5000,0)
+				if Script.Caged ~= nil then 
+					Script.Caged:Despawn(5000,0)
+				end
 				Unit:SendScriptTextById(11, 2074)
 				Unit:SetSheathState(1)
 				Unit:CreateTimer("EndAndStart",30000)
@@ -164,5 +177,6 @@ update kt_world.creature_names set name = 'Toad' where entry = 5742;
 update kt_world.creature_names set name = 'Skittish Rabbit' where entry = 5741;
 update kt_world.creature_names set name = 'Wooly Sheep' where entry = 5743;
 Update kt_world.creature_proto set equipitem0 = 2198  where entry = 5734;
+update kt_world.creature_spawns set unitbytes1 = 0 where entry = 5734;
 delete from kt_world.creature_spawns where id = 42978;
 --]]

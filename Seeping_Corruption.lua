@@ -24,7 +24,9 @@ function Script.Thersa_AIUpdate(Unit, mapScript, timeDiff)
 		elseif Unit:IsTimerFinished("Die") then
 			Unit:RemoveTimer("Die")
 			Unit:Suicide()
-			Script.MadScientist:SendEmote(11)
+			if Script.MadScientist ~= nil then
+				Script.MadScientist:SendEmote(11)
+			end
 			Unit:CreateTimer("Despawn",2000)
 		elseif Unit:IsTimerFinished("Despawn") then
 			Unit:RemoveTimer("Despawn")

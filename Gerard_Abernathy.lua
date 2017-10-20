@@ -39,7 +39,9 @@ function Script.Gerard_Update(Unit, mapScript, timeDiff)
 			Unit:RemoveTimer("TurnBack")
 			Unit:SetFacing(4.93928)
 			Unit:SetEmoteState(0)
-			Script.Theresa:SendEmote(2)
+			if Script.Theresa ~= nil then 
+				Script.Theresa:SendEmote(2)
+			end
 			Unit:CreateTimer("Option1", 2000)
 		elseif Unit:IsTimerFinished("Option1") then
 			Unit:RemoveTimer("Option1")
@@ -47,14 +49,18 @@ function Script.Gerard_Update(Unit, mapScript, timeDiff)
 			local RandO = Script.Option1[Rand]
 			Unit:SendScriptTextById(11, RandO)
 			Unit:SendEmote(6)
-			Script.Theresa:PushWaypointMovement(1001)
+			if Script.Theresa ~= nil then 
+				Script.Theresa:PushWaypointMovement(1001)
+			end
 			Unit:CreateTimer("Option2",6000)
 		elseif Unit:IsTimerFinished("Option2") then
 			Unit:RemoveTimer("Option2")
 			local Rand = math.random(1, 6)
 			local RandO = Script.Option2[Rand]
-			Script.Leona:SendScriptTextById(11, RandO)
-			Script.Leona:SendEmote(1)
+			if Script.Leona ~= nil then 
+				Script.Leona:SendScriptTextById(11, RandO)
+				Script.Leona:SendEmote(1)
+			end
 			Unit:CreateTimer("Laugh",3000)
 		elseif Unit:IsTimerFinished("Laugh") then
 			Unit:RemoveTimer("Laugh")
@@ -66,20 +72,26 @@ function Script.Gerard_Update(Unit, mapScript, timeDiff)
 			local RandO = Script.Option3[Rand]
 			Unit:SendScriptTextById(11, RandO)
 			Unit:SendEmote(1)
-			Script.Joana:SendEmote(21)
+			if Script.Joana ~= nil then 
+				Script.Joana:SendEmote(21)
+			end
 			Unit:CreateTimer("Option4",7000)
 		elseif Unit:IsTimerFinished("Option4") then
 			Unit:RemoveTimer("Option4")
 			local Rand = math.random(1, 8)
 			local RandO = Script.Option4[Rand]
-			Script.Joana:SendScriptTextById(11, RandO)
-			Script.Joana:SendEmote(1)
+			if Script.Joana ~= nil then 
+				Script.Joana:SendScriptTextById(11, RandO)
+				Script.Joana:SendEmote(1)
+			end
 		end
 	elseif Script.StartEventG == nil and Script.Theresa ~= nil then
 		Unit:SendScriptTextById(11, 1995)
 		Unit:SetEmoteState(1)
-		Script.Gerard:SetFacing(0.0086)
-		Script.Theresa:SetSheathState(1)
+		Unit:SetFacing(0.0086)
+		if Script.Theresa ~= nil then 
+			Script.Theresa:SetSheathState(1)
+		end
 		Unit:CreateTimer("TurnBack", 3000)
 		Script.StartEventG = true
 	end
@@ -99,8 +111,10 @@ function Script.Theresa_Update(Unit, mapScript, timeDiff)
 			Unit:UpdateTimers(timeDiff)
 			if Unit:IsTimerFinished("Ugh") then
 				Unit:RemoveTimer("Ugh")
-				Script.Father:SendScriptTextById(11, 2028)
-				Script.Father:SendEmote(22)
+				if Script.Father ~= nil then 
+					Script.Father:SendScriptTextById(11, 2028)
+					Script.Father:SendEmote(22)
+				end
 				Unit:CreateTimer("Yes",7000)
 			elseif Unit:IsTimerFinished("Yes") then
 				Unit:RemoveTimer("Yes")
@@ -114,14 +128,18 @@ function Script.Theresa_Update(Unit, mapScript, timeDiff)
 			Unit:UpdateTimers(timeDiff)
 			if Unit:IsTimerFinished("FromFather") then
 				Unit:RemoveTimer("FromFather")
-				Script.Gerard:SetFacing(0.0086)
-				Script.Gerard:SendScriptTextById(11, 2011)
-				Script.Gerard:SetEmoteState(1)
+				if Script.Gerard ~= nil then 
+					Script.Gerard:SetFacing(0.0086)
+					Script.Gerard:SendScriptTextById(11, 2011)
+					Script.Gerard:SetEmoteState(1)
+				end
 				Unit:CreateTimer("TurnBack", 3000)
 			elseif Unit:IsTimerFinished("TurnBack") then
 				Unit:RemoveTimer("TurnBack")
-				Script.Gerard:SetFacing(4.93928)
-				Script.Gerard:SetEmoteState(0)
+				if Script.Gerard ~= nil then 
+					Script.Gerard:SetFacing(4.93928)
+					Script.Gerard:SetEmoteState(0)
+				end
 				Script.StartWaypoint18 = nil
 				Script.StartEventT = nil
 				Script.StartEventG = false
@@ -139,16 +157,14 @@ function Script.Theresa_OnReachWaypoint(Unit, WaypointId)
 		Unit:CreateTimer("Ugh", 4000)
 		Script.StartWaypoint9 = true
 		Script.StartEventT = true
-	end
-	if WaypointId == 18 then
+	elseif WaypointId == 18 then
 		Unit:SendScriptTextById(11, 1997)
 		Unit:SetStandState(8)
 		Unit:CreateTimer("FromFather", 3000)
 		Unit:SetSheathState(0)
 		Script.StartWaypoint18 = true
 		Script.StartEventT = true
-	end
-	if WaypointId == 19 then
+	elseif WaypointId == 19 then
 		Unit:ResetMovement()
 		Unit:SetStandState(0)
 	end
@@ -197,8 +213,8 @@ insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, 
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1001,15,0,0,1706.450562,324.470398,-55.392429,0,0,'');
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1001,16,0,0,1698.821899,334.263275,-60.484234,0,0,'');
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1001,17,0,0,1660.280396,355.924194,-60.745964,0,0,'');
-insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1001,18,0,5000,1655.199951,366.372986,-60.763599,4.27606,0,'');
-insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1001,19,0,4000,1655.199951,366.372986,-60.763599,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1001,18,0,7000,1655.199951,366.372986,-60.763599,3.3666,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1001,19,0,4000,1655.199951,366.372986,-60.763599,4.27606,0,'');
 
 
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1001,19,0,4000,1653.439941,366.346985,-60.764099,4.27606,0,'');
