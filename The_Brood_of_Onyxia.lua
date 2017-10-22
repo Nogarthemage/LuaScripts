@@ -8,7 +8,7 @@ local Script = {}
 
 function Script.OnyxiaEgg_Init(GO, Player)
 	if Player:HasQuest(1172) == true then
-		Script.QuestLogEntry = Player:GetQuestLogEntry(1172) 
+		Script.QuestLogEntry = Player:GetQuestLogEntry(1172)
 		Script.QuestLogEntry:AddKill(0, 20359)
 		Script.QuestLogEntry:UpdatePlayerFields()
 	end

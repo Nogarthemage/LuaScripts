@@ -5,10 +5,10 @@
 --]]
 
 local Script = {}
-Script.Option1 = {[1] = 2000, [2] = 2001, [3] = 2002, [4] = 2003}
-Script.Option2 = {[1] = 2012, [2] = 2013, [3] = 2014, [4] = 2015, [5] = 2016, [6] = 2017}
-Script.Option3 = {[1] = 2004, [2] = 2005, [3] = 2006, [4] = 2007, [5] = 2008, [6] = 2009}
-Script.Option4 = {[1] = 2018, [2] = 2019, [3] = 2020, [4] = 2022, [5] = 2023, [6] = 2024, [7] = 2026, [8] = 2027}
+Script.Option1 = {2000, 2001, 2002, 2003}
+Script.Option2 = {2012, 2013, 2014, 2015, 2016, 2017}
+Script.Option3 = {2004, 2005, 2006, 2007, 2008, 2009}
+Script.Option4 = {2018, 2019, 2020, 2022, 2023, 2024, 2026, 2027}
 
 
 function Script.Theresa_OnSpawn(Unit)
@@ -17,6 +17,7 @@ end
 
 function Script.Gerard_OnSpawn(Unit)
 	Script.Gerard = Unit
+	math.randomseed(os.time())
 end
 
 function Script.Joana_OnSpawn(Unit)
@@ -43,49 +44,53 @@ function Script.Gerard_Update(Unit, mapScript, timeDiff)
 				Script.Theresa:SendEmote(2)
 			end
 			Unit:CreateTimer("Option1", 2000)
-		elseif Unit:IsTimerFinished("Option1") then
+			return
+		end
+		if Unit:IsTimerFinished("Option1") then
 			Unit:RemoveTimer("Option1")
-			local Rand = math.random(1, 4)
-			local RandO = Script.Option1[Rand]
-			Unit:SendScriptTextById(11, RandO)
+			Unit:SendScriptTextById(11, Script.Option1[math.random(1, 4)])
 			Unit:SendEmote(6)
 			if Script.Theresa ~= nil then 
 				Script.Theresa:PushWaypointMovement(1001)
 			end
 			Unit:CreateTimer("Option2",6000)
-		elseif Unit:IsTimerFinished("Option2") then
+			return
+		end
+		if Unit:IsTimerFinished("Option2") then
 			Unit:RemoveTimer("Option2")
-			local Rand = math.random(1, 6)
-			local RandO = Script.Option2[Rand]
 			if Script.Leona ~= nil then 
-				Script.Leona:SendScriptTextById(11, RandO)
+				Script.Leona:SendScriptTextById(11, Script.Option2[math.random(1, 6)])
 				Script.Leona:SendEmote(1)
 			end
 			Unit:CreateTimer("Laugh",3000)
-		elseif Unit:IsTimerFinished("Laugh") then
+			return
+		end
+		if Unit:IsTimerFinished("Laugh") then
 			Unit:RemoveTimer("Laugh")
 			Unit:SendEmote(11)
 			Unit:CreateTimer("Option3",4000)
-		elseif Unit:IsTimerFinished("Option3") then
+			return
+		end
+		if Unit:IsTimerFinished("Option3") then
 			Unit:RemoveTimer("Option3")
-			local Rand = math.random(1, 6)
-			local RandO = Script.Option3[Rand]
-			Unit:SendScriptTextById(11, RandO)
+			Unit:SendScriptTextById(11, Script.Option3[math.random(1, 6)])
 			Unit:SendEmote(1)
 			if Script.Joana ~= nil then 
 				Script.Joana:SendEmote(21)
 			end
 			Unit:CreateTimer("Option4",7000)
-		elseif Unit:IsTimerFinished("Option4") then
+			return
+		end
+		if Unit:IsTimerFinished("Option4") then
 			Unit:RemoveTimer("Option4")
-			local Rand = math.random(1, 8)
-			local RandO = Script.Option4[Rand]
 			if Script.Joana ~= nil then 
-				Script.Joana:SendScriptTextById(11, RandO)
+				Script.Joana:SendScriptTextById(11, Script.Option4[math.random(1, 8)])
 				Script.Joana:SendEmote(1)
 			end
+			return
 		end
-	elseif Script.StartEventG == nil and Script.Theresa ~= nil then
+	end
+	if Script.StartEventG == nil and Script.Theresa ~= nil then
 		Unit:SendScriptTextById(11, 1995)
 		Unit:SetEmoteState(1)
 		Unit:SetFacing(0.0086)
@@ -116,15 +121,20 @@ function Script.Theresa_Update(Unit, mapScript, timeDiff)
 					Script.Father:SendEmote(22)
 				end
 				Unit:CreateTimer("Yes",7000)
-			elseif Unit:IsTimerFinished("Yes") then
+				return
+			end
+			if Unit:IsTimerFinished("Yes") then
 				Unit:RemoveTimer("Yes")
 				Unit:SendScriptTextById(11, 1998)
 				Unit:SetStandState(0)
 				Unit:SetSheathState(1)
 				Script.StartEventT = nil
 				Script.StartWaypoint9 = nil
+				return
 			end
-		elseif Script.StartWaypoint18 == true then
+			return
+		end
+		if Script.StartWaypoint18 == true then
 			Unit:UpdateTimers(timeDiff)
 			if Unit:IsTimerFinished("FromFather") then
 				Unit:RemoveTimer("FromFather")
@@ -134,7 +144,9 @@ function Script.Theresa_Update(Unit, mapScript, timeDiff)
 					Script.Gerard:SetEmoteState(1)
 				end
 				Unit:CreateTimer("TurnBack", 3000)
-			elseif Unit:IsTimerFinished("TurnBack") then
+				return
+			end
+			if Unit:IsTimerFinished("TurnBack") then
 				Unit:RemoveTimer("TurnBack")
 				if Script.Gerard ~= nil then 
 					Script.Gerard:SetFacing(4.93928)
@@ -157,16 +169,21 @@ function Script.Theresa_OnReachWaypoint(Unit, WaypointId)
 		Unit:CreateTimer("Ugh", 4000)
 		Script.StartWaypoint9 = true
 		Script.StartEventT = true
-	elseif WaypointId == 18 then
+		return
+	end
+	if WaypointId == 18 then
 		Unit:SendScriptTextById(11, 1997)
 		Unit:SetStandState(8)
 		Unit:CreateTimer("FromFather", 3000)
 		Unit:SetSheathState(0)
 		Script.StartWaypoint18 = true
 		Script.StartEventT = true
-	elseif WaypointId == 19 then
+		return
+	end
+	if WaypointId == 19 then
 		Unit:ResetMovement()
 		Unit:SetStandState(0)
+		return
 	end
 end
 

@@ -21,14 +21,18 @@ function Script.Thersa_AIUpdate(Unit, mapScript, timeDiff)
 			Unit:RemoveTimer("Emote")
 			Unit:SendScriptTextById(11, 4533)
 			Unit:CreateTimer("Die",2000)
-		elseif Unit:IsTimerFinished("Die") then
+			return
+		end
+		if Unit:IsTimerFinished("Die") then
 			Unit:RemoveTimer("Die")
 			Unit:Suicide()
 			if Script.MadScientist ~= nil then
 				Script.MadScientist:SendEmote(11)
 			end
 			Unit:CreateTimer("Despawn",2000)
-		elseif Unit:IsTimerFinished("Despawn") then
+			return
+		end
+		if Unit:IsTimerFinished("Despawn") then
 			Unit:RemoveTimer("Despawn")
 			Script.UpdateCheck = nil
 			Unit:Despawn(10000,5000)

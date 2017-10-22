@@ -6,151 +6,173 @@
 
 local Script = {}
 
-function Script.Keever_Update(Unit, mapScript, timeDiff)
-	if Script.StartEvent == nil then
-		Unit:SendScriptTextById(11, 2061)
-		Unit:SetSheathState(1)
+function Script.Keever_AIUpdate(Unit, mapScript, timeDiff)
+	if not Script.CagedMinion then return end
+	Unit:UpdateTimers(timeDiff)
+	if Unit:IsTimerFinished("FirstVialEmote") then
+		Unit:RemoveTimer("FirstVialEmote")
+		Unit:SendScriptTextById(11, 2062)
 		Unit:SendEmote(1)
-		Unit:CastSpell(Unit,7077,false)
-		Script.StartEvent = true
-		Script.Part = 1
-		Unit:CreateTimer("FirstVialEmote",9000)
+		Unit:CreateTimer("FirstVial",5000)
+		return	
 	end
-	if Script.StartEvent == true then
-		Unit:UpdateTimers(timeDiff)
-		if Script.Part2 == nil then
-			if Unit:IsTimerFinished("FirstVialEmote") then
-				Unit:RemoveTimer("FirstVialEmote")
-				Unit:SendScriptTextById(11, 2062)
-				Unit:SendEmote(1)
-				Unit:CreateTimer("FirstVial",5000)
-			elseif Unit:IsTimerFinished("FirstVial") then
-				Unit:RemoveTimer("FirstVial")
-				Unit:SendScriptTextById(13, 2075)
-				Unit:SetSheathState(0)
-				Unit:CreateTimer("TurnFrog",2000)
-			elseif Unit:IsTimerFinished("TurnFrog") then
-				Unit:RemoveTimer("TurnFrog")
-				if Script.Caged ~= nil then 
-					Script.Caged:SwapCreatureEntry(5742, true)
-				end
-				Unit:CreateTimer("PokeFrog",5000)
-			elseif Unit:IsTimerFinished("PokeFrog") then
-				Unit:RemoveTimer("PokeFrog")
-				Unit:SendScriptTextById(13, 2064)
-				Unit:SetStandState(8)
-				Unit:CreateTimer("Earthroot",9000)
-			elseif Unit:IsTimerFinished("Earthroot") then
-				Unit:RemoveTimer("Earthroot")
-				Unit:SetStandState(0)
-				Unit:SetSheathState(1)
-				Unit:SendScriptTextById(11, 2063)
-				Unit:CreateTimer("Vial2",5000)
-			elseif Unit:IsTimerFinished("Vial2") then
-				Unit:RemoveTimer("Vial2")
-				Unit:SetStandState(8)
-				Unit:SendScriptTextById(13, 2065)
-				Unit:CreateTimer("TurnSquirrel",3000)
-			elseif Unit:IsTimerFinished("TurnSquirrel") then
-				Unit:RemoveTimer("TurnSquirrel")
-				if Script.Caged ~= nil then 
-					Script.Caged:SwapCreatureEntry(5739, true)
-				end
-				Unit:CreateTimer("PokeSquirrel",5000)
-			elseif Unit:IsTimerFinished("PokeSquirrel") then
-				Unit:RemoveTimer("PokeSquirrel")
-				Unit:SendScriptTextById(13, 2066)
-				Unit:CreateTimer("NotRight",11000)
-			elseif Unit:IsTimerFinished("NotRight") then
-				Unit:RemoveTimer("NotRight")
-				Unit:SetStandState(0)
-				Unit:SendScriptTextById(11, 2067)
-				Unit:CreateTimer("Vial3",5000)
-			elseif Unit:IsTimerFinished("Vial3") then
-				Unit:RemoveTimer("Vial3")
-				Unit:SendScriptTextById(13, 2068)
-				Unit:SetStandState(8)
-				Unit:CreateTimer("TurnRabbit",3000)
-			elseif Unit:IsTimerFinished("TurnRabbit") then
-				Unit:RemoveTimer("TurnRabbit")
-				if Script.Caged ~= nil then 
-					Script.Caged:SwapCreatureEntry(5741, true)
-				end
-				Unit:CreateTimer("PokeRabbit",5000)
-				Script.Part2 = true
-			end
-		else
-			if Unit:IsTimerFinished("PokeRabbit") then
-				Unit:RemoveTimer("PokeRabbit")
-				Unit:SendScriptTextById(13, 2069)
-				Unit:CreateTimer("UnhappyRabbit",5000)
-			elseif Unit:IsTimerFinished("UnhappyRabbit") then
-				Unit:RemoveTimer("UnhappyRabbit")
-				Unit:SetStandState(0)
-				Unit:SendScriptTextById(11, 2070)
-				Unit:CreateTimer("Vial4",9000)
-			elseif Unit:IsTimerFinished("Vial4") then
-				Unit:RemoveTimer("Vial4")
-				Unit:SendScriptTextById(13, 2071)
-				Unit:SetStandState(8)
-				Unit:SetSheathState(0)
-				Unit:CreateTimer("TurnSheep",3000)
-			elseif Unit:IsTimerFinished("TurnSheep") then
-				Unit:RemoveTimer("TurnSheep")
-				if Script.Caged ~= nil then 
-					Script.Caged:SwapCreatureEntry(5743, true)
-				end
-				Unit:CreateTimer("AngrySheep",2000)
-			elseif Unit:IsTimerFinished("AngrySheep") then
-				Unit:RemoveTimer("AngrySheep")
-				Unit:SetStandState(0)
-				Unit:SendScriptTextById(11, 2072)
-				Unit:CreateTimer("PokeSheep",4000)
-			elseif Unit:IsTimerFinished("PokeSheep") then
-				Unit:RemoveTimer("PokeSheep")
-				Unit:SendScriptTextById(13, 2073)
-				Unit:CreateTimer("Explode",3000)
-			elseif Unit:IsTimerFinished("Explode") then
-				Unit:RemoveTimer("Explode")
-				if Script.Caged ~= nil then 
-					Script.Caged:CastSpell(Script.Caged,7670,false)
-				end
-				Unit:CreateTimer("KillSheep",500)
-			elseif Unit:IsTimerFinished("KillSheep") then
-				Unit:RemoveTimer("KillSheep")
-				if Script.Caged ~= nil then 
-					Script.Caged:Suicide()
-				end
-				Unit:CreateTimer("Pleased",4000)
-			elseif Unit:IsTimerFinished("Pleased") then
-				Unit:RemoveTimer("Pleased")
-				if Script.Caged ~= nil then 
-					Script.Caged:Despawn(5000,0)
-				end
-				Unit:SendScriptTextById(11, 2074)
-				Unit:SetSheathState(1)
-				Unit:CreateTimer("EndAndStart",30000)
-				Script.StartEvent = false
-			end
-		end 
+	if Unit:IsTimerFinished("FirstVial") then
+		Unit:RemoveTimer("FirstVial")
+		Unit:SendScriptTextById(13, 2075)
+		Unit:SetSheathState(0)
+		Unit:CreateTimer("TurnFrog",2000)
+		return
 	end
-	if Script.StartEvent == false then
-		Unit:UpdateTimers(timeDiff)
-		if Unit:IsTimerFinished("EndAndStart") then
-			Unit:RemoveTimer("EndAndStart")
-			Script.StartEvent = nil
-		end
+	if Unit:IsTimerFinished("TurnFrog") then
+		Unit:RemoveTimer("TurnFrog")
+		Script.CagedMinion:SwapCreatureEntry(5742, true)
+		Unit:CreateTimer("PokeFrog",5000)
+		return
+	end
+	if Unit:IsTimerFinished("PokeFrog") then
+		Unit:RemoveTimer("PokeFrog")
+		Unit:SendScriptTextById(13, 2064)
+		Unit:SetStandState(8)
+		Unit:CreateTimer("Earthroot",9000)
+		return
+	end
+	if Unit:IsTimerFinished("Earthroot") then
+		Unit:RemoveTimer("Earthroot")
+		Unit:SetStandState(0)
+		Unit:SetSheathState(1)
+		Unit:SendScriptTextById(11, 2063)
+		Unit:CreateTimer("Vial2",5000)
+		return
+	end
+	if Unit:IsTimerFinished("Vial2") then
+		Unit:RemoveTimer("Vial2")
+		Unit:SetStandState(8)
+		Unit:SendScriptTextById(13, 2065)
+		Unit:CreateTimer("TurnSquirrel",3000)
+		return
+	end
+	if Unit:IsTimerFinished("TurnSquirrel") then
+		Unit:RemoveTimer("TurnSquirrel")
+		Script.CagedMinion:SwapCreatureEntry(5739, true)
+		Unit:CreateTimer("PokeSquirrel",5000)
+		return
+	end
+	if Unit:IsTimerFinished("PokeSquirrel") then
+		Unit:RemoveTimer("PokeSquirrel")
+		Unit:SendScriptTextById(13, 2066)
+		Unit:CreateTimer("NotRight",11000)
+		return
+	end
+	if Unit:IsTimerFinished("NotRight") then
+		Unit:RemoveTimer("NotRight")
+		Unit:SetStandState(0)
+		Unit:SendScriptTextById(11, 2067)
+		Unit:CreateTimer("Vial3",5000)
+		return
+	end
+	if Unit:IsTimerFinished("Vial3") then
+		Unit:RemoveTimer("Vial3")
+		Unit:SendScriptTextById(13, 2068)
+		Unit:SetStandState(8)
+		Unit:CreateTimer("TurnRabbit",3000)
+		return
+	end
+	if Unit:IsTimerFinished("TurnRabbit") then
+		Unit:RemoveTimer("TurnRabbit")
+		Script.CagedMinion:SwapCreatureEntry(5741, true)
+		Unit:CreateTimer("PokeRabbit",5000)
+		return
+	end
+	if Unit:IsTimerFinished("PokeRabbit") then
+		Unit:RemoveTimer("PokeRabbit")
+		Unit:SendScriptTextById(13, 2069)
+		Unit:CreateTimer("UnhappyRabbit",5000)
+		return
+	end
+	if Unit:IsTimerFinished("UnhappyRabbit") then
+		Unit:RemoveTimer("UnhappyRabbit")
+		Unit:SetStandState(0)
+		Unit:SendScriptTextById(11, 2070)
+		Unit:CreateTimer("Vial4",9000)
+		return
+	end
+	if Unit:IsTimerFinished("Vial4") then
+		Unit:RemoveTimer("Vial4")
+		Unit:SendScriptTextById(13, 2071)
+		Unit:SetStandState(8)
+		Unit:SetSheathState(0)
+		Unit:CreateTimer("TurnSheep",3000)
+		return
+	end
+	if Unit:IsTimerFinished("TurnSheep") then
+		Unit:RemoveTimer("TurnSheep")
+		Script.CagedMinion:SwapCreatureEntry(5743, true)
+		Unit:CreateTimer("AngrySheep",2000)
+		return
+	end
+	if Unit:IsTimerFinished("AngrySheep") then
+		Unit:RemoveTimer("AngrySheep")
+		Unit:SetStandState(0)
+		Unit:SendScriptTextById(11, 2072)
+		Unit:CreateTimer("PokeSheep",4000)
+		return
+	end
+	if Unit:IsTimerFinished("PokeSheep") then
+		Unit:RemoveTimer("PokeSheep")
+		Unit:SendScriptTextById(13, 2073)
+		Unit:CreateTimer("Explode",3000)
+		return
+	end
+	if Unit:IsTimerFinished("Explode") then
+		Unit:RemoveTimer("Explode")
+		Script.CagedMinion:CastSpell(Script.CagedMinion,7670,false)
+		Unit:CreateTimer("KillSheep",500)
+		return
+	end
+	if Unit:IsTimerFinished("KillSheep") then
+		Unit:RemoveTimer("KillSheep")
+		Script.CagedMinion:Suicide()
+		Unit:CreateTimer("Pleased",4000)
+		return
+	end
+	if Unit:IsTimerFinished("Pleased") then
+		Unit:RemoveTimer("Pleased")
+		Script.CagedMinion:Despawn(5000,0)
+		Unit:SendScriptTextById(11, 2074)
+		Unit:SetSheathState(1)
+		Unit:CreateTimer("Restart",30000)
+		return
+	end
+	if Unit:IsTimerFinished("Restart") then
+		Unit:RemoveTimer("Restart")
+		Script.CagedMinion = nil
+		Script.Restart(Unit)
+		return
 	end
 end
 
 function Script.Keever_OnSpellCast(Unit, Spell, Target)
-		Script.Caged = Unit:SpawnCreatureAtPosition(5736,1400.849976,363.242004,-84.867996, 1.117)
+	if Spell:GetSpellId() == 7077 then
+		Script.CagedMinion = Unit:SpawnCreatureAtPosition(5736,1400.849976,363.242004,-84.867996, 1.117)
+		Unit:CreateTimer("FirstVialEmote",9000)
+	end
 end
 
+function Script.Restart(Unit)
+	if not Script.CagedMinion then
+		Unit:SendScriptTextById(11, 2061)
+		Unit:SetSheathState(1)
+		Unit:SendEmote(1)		
+		Unit:CastSpell(Unit,7077,false)
+	end	
+end
 
+function Script.Keever_Spawn(Unit)
+	Script.Restart(Unit)
+end
 
-
-RegisterUnitEvent(5734, 23, Script.Keever_Update)
+RegisterUnitEvent(5734, 1, Script.Keever_Spawn)
+RegisterUnitEvent(5734,23, Script.Keever_AIUpdate)
 RegisterUnitEvent(5734, 8, Script.Keever_OnSpellCast)
 	
 

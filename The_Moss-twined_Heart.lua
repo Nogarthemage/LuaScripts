@@ -19,6 +19,7 @@ function Script.Denalan_OnConcludeQuest(Unit, QuestId, Player)
 			Unit:CreateTimer("Emote",4000)
 		end
 		Script.Active = true
+		return
 	end
 	if QuestId == 930 then
 		if Script.ResetTimer == nil then
@@ -45,18 +46,21 @@ function Script.Denalan_AIUpdate(Unit, mapScript, timeDiff)
 			Unit:EnterEvadeMode() -- interrupting the mentioned dummy spell
 			Unit:SetNpcFlags(2) -- re-activating gossip
 			Script.active = nil
+			return
 		end
 		if Unit:IsTimerFinished("Move") then
 			Unit:RemoveTimer("Move")
 			Unit:EnterEvadeMode() -- interrupting the mentioned dummy spell
 			Unit:PushWaypointMovement(18) -- moving to the planter
 			Unit:SendScriptTextById(11, 1157) -- emote
+			return
 		end
 		if Unit:IsTimerFinished("Plant") then
 			Unit:RemoveTimer("Plant")
 			Unit:StopMovement() -- stop in front of the planter and not continuemoving between the waypoints
 			Unit:SendScriptTextById(13, 1158) -- emote
 			Unit:SetEmoteState(16) -- kneel and plant
+			return
 		end
 		if Unit:IsTimerFinished("Home") then
 			Unit:RemoveTimer("Home")
@@ -67,6 +71,7 @@ function Script.Denalan_AIUpdate(Unit, mapScript, timeDiff)
 			Script.bogling1 = tostring(Unit:SpawnCreatureAtPosition(3569, 9503.47, 720.007, 1255.94, 5.80658)) -- spawning the boglings
 			Script.bogling2 = tostring(Unit:SpawnCreatureAtPosition(3569, 9502.51, 718.025, 1255.94, 5.80658))
 			Script.bogling3 = tostring(Unit:SpawnCreatureAtPosition(3569, 9504.53, 721.649, 1255.94, 5.80658))
+			return
 		end
 		if Unit:IsTimerFinished("Reset") then 
 			Unit:RemoveTimer("Reset")
@@ -88,18 +93,21 @@ function Script.Bogling_Spawn(Unit)
 			Unit:SendScriptTextById(13, 1175)
 			Unit:CreateTimer("Attack1",2000) -- timer to start combat wth the player
 		end
+		return
 	end
 	if GuidUnit == Script.bogling2 then
 		if Script.AttackTimer2 == nil then 
 			Script.AttackTimer2 = true
 			Unit:CreateTimer("Attack2",2000) -- timer to start combat wth the player
 		end
+		return
 	end
 	if GuidUnit == Script.bogling3	then
 		if Script.AttackTimer3 == nil then 
 			Script.AttackTimer3 = true
 			Unit:CreateTimer("Attack3",2000) -- timer to start combat wth the player
 		end
+		return
 	end
 end
 
@@ -118,6 +126,7 @@ function Script.Bogling_AIUpdate(Unit, mapScript, timeDiff)
 				Unit:SendScriptTextById(11, 1176)
 				Unit:Despawn(30000, 0) -- making them despawn if the player doesnt kill them and resets them
 			end
+			return
 		end
 		if GuidUnit == Script.bogling2 then
 			if Unit:IsTimerFinished("Attack2") then
@@ -129,6 +138,7 @@ function Script.Bogling_AIUpdate(Unit, mapScript, timeDiff)
 				Script.BogPlayer = nil
 				Unit:Despawn(30000, 0)
 			end
+			return
 		end
 		if GuidUnit == Script.bogling3 then
 			if Unit:IsTimerFinished("Attack3") then
@@ -141,6 +151,7 @@ function Script.Bogling_AIUpdate(Unit, mapScript, timeDiff)
 				Unit:Despawn(30000, 0) 
 				ScriptBActive = nil
 			end
+			return
 		end
 	end
 end

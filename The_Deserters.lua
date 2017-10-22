@@ -26,18 +26,24 @@ function Script.Balos_OnDamageTaken(Unit, Attacker, Amount)
 		end
 		Script.Init = true
 	end
+	if Script.QuestTrue == nil then
+		if Attacker:IsPlayer() then
+			if Attacker:HasQuest(1286) then
+				Script.QuestTrue = true
+			end
+		end
+	end
 	local Perc = 15 -- HP on wich he will turn normal
-	if Unit:GetHealthPct() <= Perc then
+	if Unit:GetHealthPct() <= Perc and Script.QuestTrue == true then
 		Unit:SetUnitFlags(512)
-		Unit:EnterEvadeMode()
 		Unit:SetCanEnterCombat(false) 
 		Unit:RemoveAllNegativeAuras() -- remove DoTs and other debuffs to prevent abuse
 		Unit:RemoveAllNonPassiveAuras() -- safety precautions
 		Unit:SetTemporaryFaction(1077) -- turn him into friendly
+		Unit:EnterEvadeMode()		
 		Unit:SetHealthPct(100) -- heal him to 100% HP
 		Unit:SetNpcFlags(2) -- Add gossip capabilites 
 		Unit:SendScriptTextById(11, 1756)
-		Unit:SendEmote(1)
 		Script.UpdateCheck = true
 		Unit:CreateTimer("RevertFac",60000)
 	end
@@ -45,6 +51,7 @@ end
 
 function Script.Balos_CombatEnd(Unit)
 	Script.Init = nil
+	Script.QuestTrue = nil
 end
 
 function Script.Balos_AIUpdate(Unit, mapScript, timeDiff)
