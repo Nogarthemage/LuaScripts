@@ -167,7 +167,7 @@ function Script.Jezelle_OnSpellCast(Unit, Spell, Target)
 		Script.Imp = Unit:SpawnCreatureAtPosition(5730,1793.282104,128.850159,-63.843094, 3.6)
 		if Script.Imp ~= nil then
 			Script.Imp:PushRandomMovement(1)
-			Script.Imp:Despawn(21000,0)
+			Script.Imp:Despawn(20500,0)
 		end
 		Unit:ResetTimer(4321, 2000)
 		Script.CheckTimer = nil
@@ -177,7 +177,7 @@ function Script.Jezelle_OnSpellCast(Unit, Spell, Target)
 		Script.Void = Unit:SpawnCreatureAtPosition(5729,1793.282104,128.850159,-63.843094, 3.6)
 		if Script.Void ~= nil then
 			Script.Void:PushRandomMovement(1)
-			Script.Void:Despawn(21000,0)
+			Script.Void:Despawn(20500,0)
 		end
 		Unit:ResetTimer(4321,2000)
 		Script.CheckTimer = nil
@@ -187,7 +187,7 @@ function Script.Jezelle_OnSpellCast(Unit, Spell, Target)
 		Script.Succ = Unit:SpawnCreatureAtPosition(5728,1793.282104,128.850159,-63.843094, 3.6)
 		if Script.Succ ~= nil then
 			Script.Succ:PushRandomMovement(1)
-			Script.Succ:Despawn(21000,0)
+			Script.Succ:Despawn(20500,0)
 		end
 		if Script.Adrian ~= nil then 
 			Script.Adrian:SendEmote(4)
@@ -203,7 +203,7 @@ function Script.Jezelle_OnSpellCast(Unit, Spell, Target)
 		Script.Hunter = Unit:SpawnCreatureAtPosition(5726,1793.282104,128.850159,-63.843094, 3.6)
 		if Script.Hunter ~= nil then
 			Script.Hunter:PushRandomMovement(1)
-			Script.Hunter:Despawn(21000,0)
+			Script.Hunter:Despawn(20500,0)
 		end
 		Unit:ResetTimer(4321,2000)
 		Script.CheckTimer = nil
@@ -213,7 +213,7 @@ function Script.Jezelle_OnSpellCast(Unit, Spell, Target)
 		Script.Steed = Unit:SpawnCreatureAtPosition(5727,1793.282104,128.850159,-63.843094, 3.6)
 		if Script.Steed ~= nil then
 			Script.Steed:PushRandomMovement(1)
-			Script.Steed:Despawn(21000,0)
+			Script.Steed:Despawn(20500,0)
 		end
 		if Script.Winifred ~= nil then 
 			Script.Winifred:SendEmote(5)
