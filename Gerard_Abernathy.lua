@@ -99,9 +99,7 @@ function Script.Gerard_Update(Unit, mapScript, timeDiff)
 		if Script.Phase == 3 and not Unit:IsInCombat() then
 			Script.CheckTimer = nil
 			Unit:SendScriptTextById(11, Script.Option1[math.random(1, 4)])
-			Unit:SetEmoteState(0)
 			Unit:SendEmote(6)
-			Unit:SetFacing(4.93928)
 			if Script.Theresa ~= nil then 
 				Script.Theresa:PushWaypointMovement(1001)
 			end
