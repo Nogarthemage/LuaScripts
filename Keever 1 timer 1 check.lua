@@ -180,7 +180,9 @@ function Script.Restart(Unit)
 		return
 	end	
 	if Script.CagedMinion then
-		Script.CagedMinion:Despawn(0,0)
+		if Script.CagedMinion ~= nil then
+			Script.CagedMinion:Despawn(0,0)
+		end
 		Unit:SendScriptTextById(11, 2061)
 		Unit:SetSheathState(1)
 		Unit:SendEmote(1)		
@@ -224,7 +226,7 @@ RegisterUnitEvent(5734, 8, Script.Keever_OnSpellCast)
 2074	33	0	Keever is most pleased.
 
 SQL
-update kt_world.creature_proto set JadeFlags = 64  where entry in (5735,5736,5737,5738,5739,5742,5741,5743);
+update kt_world.creature_proto set JadeFlags = 96  where entry in (5735,5736,5737,5738,5739,5742,5741,5743);
 update kt_world.creature_names set name = 'Squirrel' where entry = 5739;
 update kt_world.creature_names set name = 'Toad' where entry = 5742;
 update kt_world.creature_names set name = 'Skittish Rabbit' where entry = 5741;

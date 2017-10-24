@@ -269,14 +269,6 @@ insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, 
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1001,19,0,4000,1655.199951,366.372986,-60.763599,4.27606,0,'');
 
 
-insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1001,19,0,4000,1653.439941,366.346985,-60.764099,4.27606,0,'');
-insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1001,19,0,4000,1653.439941,366.346985,-60.764099,4.27606,0,'');
-
-
-(V1,V2,1,V3,V4,1653.439941,366.346985,-60.764099,V5,V6,'');
-
-
-
 
 
 --]]
