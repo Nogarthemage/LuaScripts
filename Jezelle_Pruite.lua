@@ -14,16 +14,24 @@ function Script.Winifred_OnSpawn(Unit)
 	Script.Winifred = Unit
 end
 
+function Script.Jezelle_OnHome(Unit)
+	if Script.Phase%3 == 0 then
+		Unit:SetFacing(4.1364)
+		Unit:CastSpell(Unit, 8677, false)
+	end
+end
+
 function Script.Jezelle_OnSpawn(Unit)
 	Script.Phase = 0
 	Unit:CreateTimer(4321,2500)
-	Script.CheckTimer == nil
+	Script.CheckTimer = nil
 end
 
 function Script.Jezelle_OnDeath(Unit, Killer)
 	Script.Phase = 0
 	Unit:RemoveTimer(4321)
-	Script.CheckTimer == nil
+	Script.CheckTimer = nil
+	
 end
 
 function Script.Victor_OnSpawn(Unit)
@@ -67,7 +75,6 @@ function Script.Jezelle_Update(Unit, mapScript, timeDiff)
 		Script.Phase = 6
 		if Script.Imp ~= nil then 
 			Script.Imp:CastSpell(Script.Imp, 7141, false)
-			Script.Imp:Despawn(1000,0)
 		end
 		Unit:CastSpell(Unit, 8677, false)
 		return
@@ -87,7 +94,6 @@ function Script.Jezelle_Update(Unit, mapScript, timeDiff)
 		Unit:SendScriptTextById(11, 2054)
 		if Script.Void ~= nil then 
 			Script.Void:CastSpell(Script.Void, 7141, false)
-			Script.Void:Despawn(1000,0)
 		end
 		Unit:CastSpell(Unit, 8677, false)
 		return
@@ -104,7 +110,6 @@ function Script.Jezelle_Update(Unit, mapScript, timeDiff)
 		Unit:SendScriptTextById(11, 2056)
 		if Script.Succ ~= nil then 
 			Script.Succ:CastSpell(Script.Succ, 7141, false)
-			Script.Succ:Despawn(1000,0)
 		end
 		Unit:CastSpell(Unit, 8677, false)
 		return
@@ -121,7 +126,6 @@ function Script.Jezelle_Update(Unit, mapScript, timeDiff)
 		Unit:SendScriptTextById(11, 2058)
 		if Script.Hunter ~= nil then 
 			Script.Hunter:CastSpell(Script.Hunter, 7141, false)
-			Script.Hunter:Despawn(1000,0)
 		end
 		Unit:CastSpell(Unit, 8677, false)
 		return
@@ -138,7 +142,6 @@ function Script.Jezelle_Update(Unit, mapScript, timeDiff)
 		Unit:SendEmote(2)
 		if Script.Steed ~= nil then 
 			Script.Steed:CastSpell(Script.Steed, 7141, false)
-			Script.Steed:Despawn(1000,0)
 		end
 		if Script.Adrian ~= nil then 
 			Script.Adrian:SendEmote(21)
@@ -162,18 +165,30 @@ end
 function Script.Jezelle_OnSpellCast(Unit, Spell, Target)
 	if Script.Phase == 3 then
 		Script.Imp = Unit:SpawnCreatureAtPosition(5730,1793.282104,128.850159,-63.843094, 3.6)
+		if Script.Imp ~= nil then
+			Script.Imp:PushRandomMovement(1)
+			Script.Imp:Despawn(21000,0)
+		end
 		Unit:ResetTimer(4321, 2000)
 		Script.CheckTimer = nil
 		return
 	end
 	if Script.Phase == 6 then
 		Script.Void = Unit:SpawnCreatureAtPosition(5729,1793.282104,128.850159,-63.843094, 3.6)
+		if Script.Void ~= nil then
+			Script.Void:PushRandomMovement(1)
+			Script.Void:Despawn(21000,0)
+		end
 		Unit:ResetTimer(4321,2000)
 		Script.CheckTimer = nil
 		return
 	end
 	if Script.Phase == 9 then
 		Script.Succ = Unit:SpawnCreatureAtPosition(5728,1793.282104,128.850159,-63.843094, 3.6)
+		if Script.Succ ~= nil then
+			Script.Succ:PushRandomMovement(1)
+			Script.Succ:Despawn(21000,0)
+		end
 		if Script.Adrian ~= nil then 
 			Script.Adrian:SendEmote(4)
 		end
@@ -186,12 +201,20 @@ function Script.Jezelle_OnSpellCast(Unit, Spell, Target)
 	end
 	if Script.Phase == 12 then
 		Script.Hunter = Unit:SpawnCreatureAtPosition(5726,1793.282104,128.850159,-63.843094, 3.6)
+		if Script.Hunter ~= nil then
+			Script.Hunter:PushRandomMovement(1)
+			Script.Hunter:Despawn(21000,0)
+		end
 		Unit:ResetTimer(4321,2000)
 		Script.CheckTimer = nil
 		return
 	end
 	if Script.Phase == 15 then
 		Script.Steed = Unit:SpawnCreatureAtPosition(5727,1793.282104,128.850159,-63.843094, 3.6)
+		if Script.Steed ~= nil then
+			Script.Steed:PushRandomMovement(1)
+			Script.Steed:Despawn(21000,0)
+		end
 		if Script.Winifred ~= nil then 
 			Script.Winifred:SendEmote(5)
 		end
@@ -205,6 +228,7 @@ RegisterUnitEvent(5702, 23, Script.Jezelle_Update)
 RegisterUnitEvent(5702, 8, Script.Jezelle_OnSpellCast)
 RegisterUnitEvent(5702, 1, Script.Jezelle_OnSpawn)
 RegisterUnitEvent(5702, 2, Script.Jezelle_OnDeath)
+RegisterUnitEvent(5702, 15, Script.Jezelle_OnHome)
 RegisterUnitEvent(5704, 1, Script.Adrian_OnSpawn)
 RegisterUnitEvent(5703, 1, Script.Winifred_OnSpawn)
 RegisterUnitEvent(5705, 1, Script.Victor_OnSpawn)
