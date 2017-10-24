@@ -18,7 +18,6 @@ function Script.Denalan_Death(Unit)
 end
 
 function Script.Denalan_OnHome(Unit)
-	Script.ResetTimer = nil
 	Unit:SetNpcFlags(2)-- re-activating gossip
 end
 
@@ -166,7 +165,6 @@ RegisterUnitEvent(3569, 1,  Script.Bogling_Spawn)
 RegisterUnitEvent(2080, 17,  Script.Denalan_OnConcludeQuest)
 RegisterUnitEvent(2080, 15,  Script.Denalan_OnHome)
 RegisterUnitEvent(2080, 2,  Script.Denalan_Death)
-RegisterUnitEvent(2080, 15,  Script.Denalan_OnHome)
 RegisterUnitEvent(2080, 23,  Script.Denalan_AIUpdate)
 RegisterUnitEvent(3569, 23,  Script.Bogling_AIUpdate)
 
