@@ -14,153 +14,165 @@ function Script.Winifred_OnSpawn(Unit)
 	Script.Winifred = Unit
 end
 
+function Script.Jezelle_OnSpawn(Unit)
+	Script.Phase = 0
+	Unit:CreateTimer(4321,2500)
+	Script.CheckTimer == nil
+end
+
+function Script.Jezelle_OnDeath(Unit, Killer)
+	Script.Phase = 0
+	Unit:RemoveTimer(4321)
+	Script.CheckTimer == nil
+end
+
 function Script.Victor_OnSpawn(Unit)
 	Script.Victor = Unit
 end
 
 function Script.Jezelle_Update(Unit, mapScript, timeDiff)
-	if Script.StartEvent == nil then
-		Script.SpellCounter = 0
-		Unit:SendScriptTextById(11, 2049)
-		Unit:SendEmote(1)
-		Unit:CreateTimer("Lessons", 14000)
-		Script.StartEvent = true
+	if Script.CheckTimer == nil then
+		Unit:UpdateTimers(timeDiff)
+		if Unit:IsTimerFinished(4321) then
+			Script.Phase = Script.Phase + 1
+			Script.CheckTimer = false
+		end
 		return
 	end
-	if Script.StartEvent == true then
-	Unit:UpdateTimers(timeDiff)
-		if Unit:IsTimerFinished("Lessons") then
-			Unit:RemoveTimer("Lessons")
-			Unit:SendScriptTextById(11, 2050)
-			Unit:CastSpell(Unit, 8677, false)
-			return
-		end
-		if Unit:IsTimerFinished("SummonImp") then
-			Unit:RemoveTimer("SummonImp")
-			Unit:SendScriptTextById(11, 2051)
-			if Script.Adrian ~= nil then 
-				Script.Adrian:SendEmote(11)
-			end
-			Unit:SendEmote(1)
-			Unit:CreateTimer("ExplainVoid",17000)
-			return
-		end
-		if Unit:IsTimerFinished("ExplainVoid") then
-			Unit:RemoveTimer("ExplainVoid")
-			Unit:SendScriptTextById(11, 2052)
-			if Script.Imp ~= nil then 
-				Script.Imp:CastSpell(Script.Imp, 7141, false)
-				Script.Imp:Despawn(1000,0)
-			end
-			Unit:CastSpell(Unit, 8677, false)
-			return
-		end
-		if Unit:IsTimerFinished("SummonVoid") then
-			Unit:RemoveTimer("SummonVoid")
-			if Script.Winifred ~= nil then 
-				Script.Winifred:SendEmote(17)
-			end
-			Unit:SendScriptTextById(11, 2053)
-			Unit:SendEmote(1)
-			Unit:CreateTimer("ExplainSucc",17000)
-			return
-		end
-		if Unit:IsTimerFinished("ExplainSucc") then
-			Unit:RemoveTimer("ExplainSucc")
-			Unit:SendScriptTextById(11, 2054)
-			if Script.Void ~= nil then 
-				Script.Void:CastSpell(Script.Void, 7141, false)
-				Script.Void:Despawn(1000,0)
-			end
-			Unit:CastSpell(Unit, 8677, false)
-			return
-		end
-		if Unit:IsTimerFinished("SummonSucc") then
-			Unit:RemoveTimer("SummonSucc")
-			Unit:SendScriptTextById(11, 2055)
-			Unit:SendEmote(1)
-			Unit:CreateTimer("ExplainHunter",17000)
-			return
-		end
-		if Unit:IsTimerFinished("ExplainHunter") then
-			Unit:RemoveTimer("ExplainHunter")
-			Unit:SendScriptTextById(11, 2056)
-			if Script.Succ ~= nil then 
-				Script.Succ:CastSpell(Script.Succ, 7141, false)
-				Script.Succ:Despawn(1000,0)
-			end
-			Unit:CastSpell(Unit, 8677, false)
-			return
-		end
-		if Unit:IsTimerFinished("SummonHunter") then
-			Unit:RemoveTimer("SummonHunter")
-			Unit:SendScriptTextById(11, 2057)
-			Unit:SendEmote(1)
-			Unit:CreateTimer("ExplainSteed",17000)
-			return
-		end
-		if Unit:IsTimerFinished("ExplainSteed") then
-			Unit:RemoveTimer("ExplainSteed")
-			Unit:SendScriptTextById(11, 2058)
-			if Script.Hunter ~= nil then 
-				Script.Hunter:CastSpell(Script.Hunter, 7141, false)
-				Script.Hunter:Despawn(1000,0)
-			end
-			Unit:CastSpell(Unit, 8677, false)
-			return
-		end
-		if Unit:IsTimerFinished("SummonSteed") then
-			Unit:RemoveTimer("SummonSteed")
-			Unit:SendScriptTextById(11, 2059)
-			Unit:SendEmote(1)
-			Unit:CreateTimer("EndingEmote",17000)
-			return
-		end
-		if Unit:IsTimerFinished("EndingEmote") then
-			Unit:RemoveTimer("EndingEmote")
-			Unit:SendScriptTextById(11, 2060)
-			Unit:SendEmote(2)
-			if Script.Steed ~= nil then 
-				Script.Steed:CastSpell(Script.Steed, 7141, false)
-				Script.Steed:Despawn(1000,0)
-			end
-			if Script.Adrian ~= nil then 
-				Script.Adrian:SendEmote(21)
-			end
-			if Script.Winifred ~= nil then 
-				Script.Winifred:SendEmote(21)
-			end
-			if Script.Victor ~= nil then 
-				Script.Victor:SendEmote(21)
-			end
-			Unit:CreateTimer("EndAndStart",120000)
-			Script.StartEvent = false
-			return
-		end
+	if Script.Phase == 1 and not Unit:IsInCombat() then
+		Unit:SendScriptTextById(11, 2049)
+		Unit:SendEmote(1)
+		Unit:ResetTimer(4321, 14000)
+		Script.CheckTimer = nil
+		return
 	end
-	if Script.StartEvent == false then
-		Unit:UpdateTimers(timeDiff)
-		if Unit:IsTimerFinished("EndAndStart") then
-			Unit:RemoveTimer("EndAndStart")
-			Script.StartEvent = nil
+	if Script.Phase == 2 and not Unit:IsInCombat() then
+		Script.Phase = 3
+		Unit:SendScriptTextById(11, 2050)
+		Unit:CastSpell(Unit, 8677, false)
+		return
+	end
+	if Script.Phase == 4 and not Unit:IsInCombat() then
+		Unit:SendScriptTextById(11, 2051)
+		if Script.Adrian ~= nil then 
+			Script.Adrian:SendEmote(11)
 		end
+		Unit:SendEmote(1)
+		Unit:ResetTimer(4321,17000)
+		Script.CheckTimer = nil
+		return
+	end
+	if Script.Phase == 5 and not Unit:IsInCombat() then
+		Unit:SendScriptTextById(11, 2052)
+		Script.Phase = 6
+		if Script.Imp ~= nil then 
+			Script.Imp:CastSpell(Script.Imp, 7141, false)
+			Script.Imp:Despawn(1000,0)
+		end
+		Unit:CastSpell(Unit, 8677, false)
+		return
+	end
+	if Script.Phase == 7 and not Unit:IsInCombat() then
+		if Script.Winifred ~= nil then 
+			Script.Winifred:SendEmote(17)
+		end
+		Unit:SendScriptTextById(11, 2053)
+		Unit:SendEmote(1)
+		Unit:ResetTimer(4321,17000)
+		Script.CheckTimer = nil
+		return
+	end
+	if Script.Phase == 8 and not Unit:IsInCombat() then
+		Script.Phase = 9
+		Unit:SendScriptTextById(11, 2054)
+		if Script.Void ~= nil then 
+			Script.Void:CastSpell(Script.Void, 7141, false)
+			Script.Void:Despawn(1000,0)
+		end
+		Unit:CastSpell(Unit, 8677, false)
+		return
+	end
+	if Script.Phase == 10 and not Unit:IsInCombat() then
+		Unit:SendScriptTextById(11, 2055)
+		Unit:SendEmote(1)
+		Unit:ResetTimer(4321,17000)
+		Script.CheckTimer = nil
+		return
+	end
+	if Script.Phase == 11 and not Unit:IsInCombat() then
+		Script.Phase = 12
+		Unit:SendScriptTextById(11, 2056)
+		if Script.Succ ~= nil then 
+			Script.Succ:CastSpell(Script.Succ, 7141, false)
+			Script.Succ:Despawn(1000,0)
+		end
+		Unit:CastSpell(Unit, 8677, false)
+		return
+	end
+	if Script.Phase == 13 and not Unit:IsInCombat() then
+		Unit:SendScriptTextById(11, 2057)
+		Unit:SendEmote(1)
+		Unit:ResetTimer(4321,17000)
+		Script.CheckTimer = nil
+		return
+	end
+	if Script.Phase == 14 and not Unit:IsInCombat() then
+		Script.Phase = 15
+		Unit:SendScriptTextById(11, 2058)
+		if Script.Hunter ~= nil then 
+			Script.Hunter:CastSpell(Script.Hunter, 7141, false)
+			Script.Hunter:Despawn(1000,0)
+		end
+		Unit:CastSpell(Unit, 8677, false)
+		return
+	end
+	if Script.Phase == 16 and not Unit:IsInCombat() then
+		Unit:SendScriptTextById(11, 2059)
+		Unit:SendEmote(1)
+		Unit:ResetTimer(4321,17000)
+		Script.CheckTimer = nil
+		return
+	end
+	if Script.Phase == 17  and not Unit:IsInCombat() then
+		Unit:SendScriptTextById(11, 2060)
+		Unit:SendEmote(2)
+		if Script.Steed ~= nil then 
+			Script.Steed:CastSpell(Script.Steed, 7141, false)
+			Script.Steed:Despawn(1000,0)
+		end
+		if Script.Adrian ~= nil then 
+			Script.Adrian:SendEmote(21)
+		end
+		if Script.Winifred ~= nil then 
+			Script.Winifred:SendEmote(21)
+		end
+		if Script.Victor ~= nil then 
+			Script.Victor:SendEmote(21)
+		end
+		Unit:ResetTimer(4321,120000)
+		Script.CheckTimer = nil
+		return
+	end
+	if Script.Phase == 18  and not Unit:IsInCombat() then
+		Script.Phase = 0
+		Script.CheckTimer = nil
 	end
 end
 
 function Script.Jezelle_OnSpellCast(Unit, Spell, Target)
-	if Script.SpellCounter == 0 then
+	if Script.Phase == 3 then
 		Script.Imp = Unit:SpawnCreatureAtPosition(5730,1793.282104,128.850159,-63.843094, 3.6)
-		Script.SpellCounter = Script.SpellCounter + 1
-		Unit:CreateTimer("SummonImp",2000)
+		Unit:ResetTimer(4321, 2000)
+		Script.CheckTimer = nil
 		return
 	end
-	if Script.SpellCounter == 1 then
+	if Script.Phase == 6 then
 		Script.Void = Unit:SpawnCreatureAtPosition(5729,1793.282104,128.850159,-63.843094, 3.6)
-		Script.SpellCounter = Script.SpellCounter + 1
-		Unit:CreateTimer("SummonVoid",2000)
+		Unit:ResetTimer(4321,2000)
+		Script.CheckTimer = nil
 		return
 	end
-	if Script.SpellCounter == 2 then
+	if Script.Phase == 9 then
 		Script.Succ = Unit:SpawnCreatureAtPosition(5728,1793.282104,128.850159,-63.843094, 3.6)
 		if Script.Adrian ~= nil then 
 			Script.Adrian:SendEmote(4)
@@ -168,29 +180,31 @@ function Script.Jezelle_OnSpellCast(Unit, Spell, Target)
 		if Script.Victor ~= nil then 
 			Script.Victor:SendEmote(24)
 		end
-		Script.SpellCounter = Script.SpellCounter + 1
-		Unit:CreateTimer("SummonSucc",2000)
+		Unit:ResetTimer(4321,2000)
+		Script.CheckTimer = nil
 		return
 	end
-	if Script.SpellCounter == 3 then
+	if Script.Phase == 12 then
 		Script.Hunter = Unit:SpawnCreatureAtPosition(5726,1793.282104,128.850159,-63.843094, 3.6)
-		Script.SpellCounter = Script.SpellCounter + 1
-		Unit:CreateTimer("SummonHunter",2000)
+		Unit:ResetTimer(4321,2000)
+		Script.CheckTimer = nil
 		return
 	end
-	if Script.SpellCounter == 4 then
+	if Script.Phase == 15 then
 		Script.Steed = Unit:SpawnCreatureAtPosition(5727,1793.282104,128.850159,-63.843094, 3.6)
 		if Script.Winifred ~= nil then 
 			Script.Winifred:SendEmote(5)
 		end
-		Script.SpellCounter = Script.SpellCounter + 1
-		Unit:CreateTimer("SummonSteed",2000)
+		Unit:ResetTimer(4321,2000)
+		Script.CheckTimer = nil
 	end
 end
 
 --RegisterUnitEvent(5702, 1, Script.Jezelle_Spawn)
 RegisterUnitEvent(5702, 23, Script.Jezelle_Update)
 RegisterUnitEvent(5702, 8, Script.Jezelle_OnSpellCast)
+RegisterUnitEvent(5702, 1, Script.Jezelle_OnSpawn)
+RegisterUnitEvent(5702, 2, Script.Jezelle_OnDeath)
 RegisterUnitEvent(5704, 1, Script.Adrian_OnSpawn)
 RegisterUnitEvent(5703, 1, Script.Winifred_OnSpawn)
 RegisterUnitEvent(5705, 1, Script.Victor_OnSpawn)
