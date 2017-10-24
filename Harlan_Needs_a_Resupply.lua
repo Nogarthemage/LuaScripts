@@ -12,6 +12,7 @@ end
 
 function Corbett_OnDeath(Unit, Killer)
 	Script.Active = nil
+	Unit:ResetMovement()
 end
 
 function Script.Rema_OnSpawn(Unit)

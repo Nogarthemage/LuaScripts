@@ -6,6 +6,12 @@
 
 local Script = {}
 
+function Script.Thersa_OnDeath(Unit, Killer)
+	ScriptPhase = 0
+	Unit:RemoveTimer(4321)
+	Script.UpdateCheck = nil
+end
+
 function Script.Thersa_OnConcludeQuest(Unit, QuestId, Player)
 	Script.MadScientist = Unit:GetCreatureBySqlId(30498)
 	Unit:CreateTimer(4321,3000)
@@ -42,5 +48,6 @@ function Script.Thersa_AIUpdate(Unit, mapScript, timeDiff)
 	end
 end
 
+RegisterUnitEvent(8393, 2,  Script.Thersa_OnSpawn)
 RegisterUnitEvent(8393, 17,  Script.Thersa_OnConcludeQuest)
 RegisterUnitEvent(8393, 23,  Script.Thersa_AIUpdate)
