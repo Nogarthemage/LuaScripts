@@ -15,8 +15,8 @@ function Script.Winifred_OnSpawn(Unit)
 end
 
 function Script.Jezelle_OnHome(Unit)
+	Unit:SetFacing(4.1364)
 	if Script.Phase%3 == 0 then
-		Unit:SetFacing(4.1364)
 		Unit:CastSpell(Unit, 8677, false)
 	end
 end

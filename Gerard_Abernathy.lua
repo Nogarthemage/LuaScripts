@@ -65,7 +65,7 @@ end
 function Script.Gerard_Update(Unit, mapScript, timeDiff)
 	if Script.StartEventG == false then return end
 	if Script.StartEventG == true then
-		Unit:ResetTimer(4321, 10000)
+		Unit:ResetTimer(4321, 30000)
 		Script.StartEventG = nil
 		return 
 	end
