@@ -45,7 +45,7 @@ end
 function Script.Khara_Spawn(Unit)
 	Script.Phase = 0
 	Script.Khara = Unit
-	Script.Warg:ResetMovement()
+	Unit:ResetMovement()
 	Unit:SetStandState(0)
 	Script.InactiveTimer = true
 end
@@ -53,7 +53,7 @@ end
 function Script.Warg_Spawn(Unit)
 	math.randomseed(os.time())
 	Unit:SetStandState(0)
-	Script.Warg:ResetMovement()
+	Unit:ResetMovement()
 	Script.Warg = Unit
 	Script.InactiveTimer = true
 	Script.Phase = 0
