@@ -13,9 +13,11 @@ function Script.Warg_Death(Unit)
 	Script.Phase = nil
 	Unit:RemoveTimer(4321)
 	Unit:ResetMovement()
+	Unit:SetStandState(0)
 	if Script.Khara ~= nil then
 		Script.Khara:ResetMovement()
 		Script.Khara:MoveHome()
+		Script.Khara:SetStandState(0)
 	end
 	Script.InactiveTimer = false
 	Script.KEnd = nil
@@ -27,9 +29,11 @@ end
 function Script.Khara_Death(Unit)
 	Script.Phase = nil
 	Unit:ResetMovement()
+	Unit:SetStandState(0)
 	if Script.Warg ~= nil then
 		Script.Warg:ResetMovement()
 		Script.Warg:MoveHome()
+		Script.Warg:SetStandState(0)
 	end
 	Script.InactiveTimer = false
 	Script.KEnd = nil
@@ -41,11 +45,15 @@ end
 function Script.Khara_Spawn(Unit)
 	Script.Phase = 0
 	Script.Khara = Unit
+	Script.Warg:ResetMovement()
+	Unit:SetStandState(0)
 	Script.InactiveTimer = true
 end
 
 function Script.Warg_Spawn(Unit)
 	math.randomseed(os.time())
+	Unit:SetStandState(0)
+	Script.Warg:ResetMovement()
 	Script.Warg = Unit
 	Script.InactiveTimer = true
 	Script.Phase = 0
