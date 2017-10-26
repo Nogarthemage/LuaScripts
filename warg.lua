@@ -237,31 +237,50 @@ warg by the water
 
 
 
-update kt_world.creature_spawns set unitBytes2 = 0 where entry = 1683;
 
 update kt_world.locale_broadcast_text set EN_FemaleText = EN_MaleText, RU_FemaleText = RU_MaleText, DE_FemaleText = DE_MaleText, FR_FemaleText = FR_MaleText, CN_FemaleText = CN_MaleText where id in (340,342);
-replace into kt_script.event_trigger_data set triggerid = 1007, eventtype = 5, EventIData1 = 173, note = 'work state';
-replace into kt_script.event_trigger_data set triggerid = 1005, eventtype = 6, EventIData1 = 25, note = 'point emote';
+delete from kt_world.waypoint_script where scriptentry = 1005;
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1005,1,0,0,-5212.459961,-3111.720703,301.528015,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1005,2,0,0,-5212.459961,-3111.720703,301.528015,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1005,3,0,0,-5212.843750,-3089.551025,300.115204,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1005,4,0,2000,-5208.116211,-3089.455322,300.608093,0,0,'');
 
+delete from kt_world.waypoint_script where scriptentry = 1006;
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1006,1,0,0,-5212.599609,-3103.615723,303.171112,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1006,2,0,0,-5212.904297,-3090.823242,300.115479,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1006,3,0,6000,-5216.783691,-3085.379639,299.781982,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1006,4,0,5500,-5216.783691,-3085.379639,299.781982,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1006,5,0,3500,-5216.783691,-3085.379639,299.781982,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1006,6,0,0,-5216.783691,-3085.379639,299.781982,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1006,7,0,0,-5206.375977,-3085.402588,300.114868,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1006,8,0,2000,-5206.252441,-3087.468262,300.614838,0,0,'');
 
 
 delete from kt_world.waypoint_script where scriptentry = 1007;
-insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1007,1,0,0,-5212.988770,-3089.803223,300.115417,0,0,'');
-insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1007,2,0,0,-5212.660645,-3103.792480,303.170990,0,0,'');
-insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1007,3,0,0,-5214.383301,-3104.217285,303.171356,0,0,'');
-insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1007,4,0,0,-5212.499512,-3107.095947,303.171356,0,0,'');
-insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1007,5,0,0,-5213.938965,-3126.565430,297.786255,0,4.311,'');
-
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1007,1,0,0,-5207.950195,-3089.439941,300.114990,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1007,2,0,0,-5212.988770,-3089.803223,300.115417,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1007,3,0,0,-5212.660645,-3103.792480,303.170990,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1007,4,0,3000,-5214.383301,-3104.217285,303.171356,0,1005,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1007,5,0,0,-5214.383301,-3104.217285,303.171356,0,1005,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1007,6,0,0,-5212.499512,-3107.095947,303.171356,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1007,7,0,2000,-5213.938965,-3126.565430,297.786255,4.311,0,'');
 	
-(V1,V2,1,V3,V4,-5212.988770,-3089.803223,300.115417,V5,V6,'');
-(V1,V2,2,V3,V4,-5212.988770,-3089.803223,300.115417,V5,V6,'');
-(V1,V2,3,V3,V4,-5212.660645,-3103.792480,303.170990,V5,V6,'');
-(V1,V2,4,V3,V4,-5214.383301,-3104.217285,303.171356,V5,V6,'');
-(V1,V2,5,V3,V4,-5212.499512,-3107.095947,303.171356,V5,V6,'');
-(V1,V2,6,V3,V4,-5213.938965,-3126.565430,297.786255,V5,V6,'');
+
+delete from kt_world.waypoint_script where scriptentry = 1008;
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1008,1,0,0,-5206.486328,-3085.491211,300.115234,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1008,2,0,0,-5210.527832,-3085.683105,300.115234,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1008,3,0,0,-5212.909668,-3090.963867,300.115234,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1008,4,0,0,-5212.564941,-3102.986084,303.171387,0,1005,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1008,5,0,2000,-5210.089844,-3104.739990,303.170990,5.55,0,'');
+
+replace into kt_script.event_trigger_data set triggerid = 1005, eventtype = 6, EventIData1 = 25, note = 'point emote';
+
+replace into kt_script.event_trigger_data set triggerid = 1007, eventtype = 5, EventIData1 = 173, note = 'work state';
+
+update kt_world.creature_spawns set unitBytes2 = 0 where entry = 1683;
 
 
-
+IGNORE THIS
 kids playing outside an inn
 360	6	0	Berte! Evalyn! It's getting dark. Come inside.
 
