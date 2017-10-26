@@ -1,6 +1,6 @@
 --[[
     Benediction Lua Scripts
-    NPC 1777 - Dakk Blunderblast
+    NPC 1683 - Warg Deepwater
     Developed by Nogar
 --]]
 
@@ -14,6 +14,7 @@ function Script.Warg_Death(Unit)
 	Unit:RemoveTimer(4321)
 	Unit:ResetMovement()
 	Unit:SetStandState(0)
+	Unit:SetSheathState(0)
 	if Script.Khara ~= nil then
 		Script.Khara:ResetMovement()
 		Script.Khara:MoveHome()
@@ -31,6 +32,7 @@ function Script.Khara_Death(Unit)
 	Unit:ResetMovement()
 	Unit:SetStandState(0)
 	if Script.Warg ~= nil then
+		Script.Warg:SetSheathState(0)
 		Script.Warg:ResetMovement()
 		Script.Warg:MoveHome()
 		Script.Warg:SetStandState(0)
@@ -297,6 +299,7 @@ replace into kt_script.event_trigger_data set triggerid = 1007, eventtype = 5, E
 
 update kt_world.creature_spawns set unitBytes2 = 0 where entry = 1683;
 
+update kt_world.creature_proto set EquipItem0 = 6256 where entry = 1683;
 
 IGNORE THIS
 kids playing outside an inn
