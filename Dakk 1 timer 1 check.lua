@@ -8,7 +8,6 @@ local Script = {}
 
 function Script.Dummy_Spawn(Unit)
 	Script.Dummy = Unit
-	Unit:CastSpell(Unit,23196,false)
 end
 
 function Script.Dakk_Death(Unit)
@@ -119,7 +118,7 @@ function Script.Dakk_OnReachWaypoint(Unit, WaypointId)
 			Script.InactiveTimer = true
 			Script.Path2 = nil
 			Unit:ResetMovement()
-			Unit:ResetTimer(4321, 30000)
+			Unit:ResetTimer(4321, 120000)
 			Script.Phase = 0
 		end
 	end
@@ -129,7 +128,7 @@ end
 RegisterUnitEvent(1777, 23, Script.Dakk_Update)
 RegisterUnitEvent(1777, 1, Script.Dakk_Spawn)
 RegisterUnitEvent(1777, 2, Script.Dakk_Death)
-RegisterUnitEvent(15996, 1, Script.Dummy_Spawn)
+RegisterUnitEvent(1469, 1, Script.Dummy_Spawn)
 RegisterUnitEvent(1777, 14, Script.Dakk_OnReachWaypoint)
 	
 --[[
@@ -144,10 +143,7 @@ insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, 
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1004,3,0,0,-5277.974609,-2969.365967,338.737274,0,0,'');
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1004,2,0,0,-5277.974609,-2969.365967,338.737274,0,0,'');
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1004,1,0,3000,-5275.259766,-2971.020020,338.737000,0,0,'');
-update kt_world.creature_proto set AImode = 2, rangedspell = 7918, EquipItem2 = 2552 where entry = 1777; -- 
-delete from kt_world.creature_spawns where entry = 15996;
-replace into creature_spawns (entry, map, position_x, position_y, position_z, orientation, RandomSpread, factionId, unitBytes2, walkSpeed, runSpeed, EventState, unitflags) VALUES(15996,0,-5301.720703,-2979.369385,340.631592,2.02,0,14,4097,2.5,7.5,1,256);
-329	6	0	Vrok said the sights are off on Grumlar's gun. I suppose I should check it.
+update kt_world.creature_proto set AImode = 2, rangedspell = 7918, EquipItem2 = 2552 where entry = 1777; -- 329	6	0	Vrok said the sights are off on Grumlar's gun. I suppose I should check it.
 330	6	0	Hmph! I didn't even hit the blasted target! That thick skulled dwarf was probably using the gun as a mace again.
 331	6	0	Hmmmm... That one clipped it's shoulder. Grumlar was right, the sights are slightly off. Easy enough for me to fix though.
 332	6	0	Almost perfect shot! It's a bit off but I can see where Grumlar would miss with it. He couldn't hit the broad side of a barn.
