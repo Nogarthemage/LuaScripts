@@ -14,6 +14,7 @@ function Script.Warg_Death(Unit)
 	Unit:RemoveTimer(4321)
 	Unit:ResetMovement()
 	if Script.Khara ~= nil then
+		Script.Khara:ResetMovement()
 		Script.Khara:MoveHome()
 	end
 	Script.InactiveTimer = false
@@ -27,6 +28,7 @@ function Script.Khara_Death(Unit)
 	Script.Phase = nil
 	Unit:ResetMovement()
 	if Script.Warg ~= nil then
+		Script.Warg:ResetMovement()
 		Script.Warg:MoveHome()
 	end
 	Script.InactiveTimer = false
