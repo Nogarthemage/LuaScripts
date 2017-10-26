@@ -19,23 +19,26 @@ function Script.Warg_Death(Unit)
 	Script.InactiveTimer = false
 	Script.KEnd = nil
 	Script.WEnd = nil
+	Script.KSitting = nil
+	Script.WSitting = nil
 end
 
 function Script.Khara_Death(Unit)
 	Script.Phase = nil
+	Unit:ResetMovement()
 	if Script.Warg ~= nil then
 		Script.Warg:MoveHome()
 	end
-	Unit:ResetMovement()
 	Script.InactiveTimer = false
 	Script.KEnd = nil
 	Script.WEnd = nil
+	Script.KSitting = nil
+	Script.WSitting = nil
 end
 
 function Script.Khara_Spawn(Unit)
 	Script.Phase = 0
 	Script.Khara = Unit
-	Unit:ResetMovement()
 	Script.InactiveTimer = true
 end
 
@@ -91,6 +94,8 @@ function Script.Warg_Update(Unit, mapScript, timeDiff)
 				Script.Phase = 0
 				Script.KEnd = nil
 				Script.WEnd = nil
+				Script.KSitting = nil
+				Script.WSitting = nil
 			end
 			return
 		end
@@ -110,7 +115,7 @@ function Script.Warg_OnReachWaypoint(Unit, WaypointId)
 				if Script.Khara ~= nil then
 					Script.Khara:CastSpell(Unit, 433, false)
 				end
-				Unit:ResetTimer(4321,20000)
+				Unit:ResetTimer(4321,30000)
 				Script.InactiveTimer = true
 			end
 			return
@@ -128,7 +133,7 @@ function Script.Warg_OnReachWaypoint(Unit, WaypointId)
 		if WaypointId == 7 then
 			Unit:ResetMovement()
 			Unit:SendScriptTextById(13,352)
-			Unit:ResetTimer(4321,10000)
+			Unit:ResetTimer(4321,12000)
 			Script.InactiveTimer = true
 		end
 	end
@@ -162,10 +167,10 @@ function Script.Khara_OnReachWaypoint(Unit, WaypointId)
 			return
 		end
 		if WaypointId == 8 then
-			Script.KSitting = true
 			Unit:SetStandState(1)
 			Unit:ResetMovement()
 			Unit:SetFacing(3.213)
+			Script.KSitting = true
 			if Script.WSitting == true then
 				Script.Warg:CastSpell(Unit, 433, false)
 				Unit:CastSpell(Unit, 433, false)
@@ -184,6 +189,8 @@ function Script.Khara_OnReachWaypoint(Unit, WaypointId)
 				Script.InactiveTimer = true
 				Script.KEnd = nil
 				Script.WEnd = nil
+				Script.KSitting = nil
+				Script.WSitting = nil
 			end
 		end
 	end
@@ -194,6 +201,7 @@ RegisterUnitEvent(1683, 23, Script.Warg_Update)
 RegisterUnitEvent(1683, 1, Script.Warg_Spawn)
 RegisterUnitEvent(1684, 1, Script.Khara_Spawn)
 RegisterUnitEvent(1683, 2, Script.Warg_Death)
+RegisterUnitEvent(1684, 2, Script.Khara_Death)
 RegisterUnitEvent(1683, 14, Script.Warg_OnReachWaypoint)
 RegisterUnitEvent(1684, 14, Script.Khara_OnReachWaypoint)
 	
