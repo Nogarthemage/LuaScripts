@@ -102,6 +102,7 @@ function Script.Warg_Update(Unit, mapScript, timeDiff)
 		end
 		if Script.Phase == 5 then
 			Unit:SendScriptTextById(11, Script.Option2[math.random(6)]) -- talk about the fishing condition
+			Unit:SendEmote(1)
 			Unit:ResetTimer(4321, 20000)
 			Script.InactiveTimer = true
 			return
