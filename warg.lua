@@ -8,8 +8,7 @@ local Script = {}
 Script.Option1 = {343,346,347,348,349}
 Script.Option2 = {350,353,356,357,358,359}
 
-
-function Script.Khara_Spawn(Unit)
+function Script.Khara_Spawn(Unit) -- init on spawn
 	Script.Phase = 0
 	Script.Khara = Unit
 	Unit:ResetMovement()
@@ -17,7 +16,7 @@ function Script.Khara_Spawn(Unit)
 	Script.InactiveTimer = true
 end
 
-function Script.Warg_Spawn(Unit)
+function Script.Warg_Spawn(Unit) -- init on spawn
 	math.randomseed(os.time())
 	Unit:SetStandState(0)
 	Unit:ResetMovement()
@@ -27,7 +26,7 @@ function Script.Warg_Spawn(Unit)
 	Unit:CreateTimer(4321, 2500)
 end
 
-function Script.Warg_Death(Unit)
+function Script.Warg_Death(Unit) -- resetting script fully
 	Script.Phase = nil
 	Unit:RemoveTimer(4321)
 	Unit:ResetMovement()
@@ -42,7 +41,7 @@ function Script.Warg_Death(Unit)
 	Script.ResetChecks()
 end
 
-function Script.Khara_Death(Unit)
+function Script.Khara_Death(Unit) -- resetting script fully
 	Script.Phase = nil
 	Unit:ResetMovement()
 	Unit:SetStandState(0)
@@ -56,19 +55,19 @@ function Script.Khara_Death(Unit)
 	Script.ResetChecks()
 end
 
-function Script.Warg_LeaveCombat(Unit)
+function Script.Warg_LeaveCombat(Unit) -- if they enter combat again after one of them died they will still reset fine like this
 	if Script.Phase == nil then
 		Unit:MoveHome()
 	end
 end
 
-function Script.Khara_LeaveCombat(Unit)
+function Script.Khara_LeaveCombat(Unit) -- if they enter combat again after one of them died they will still reset fine like this
 	if Script.Phase == 0 then
 		Unit:MoveHome()
 	end
 end
 
-function Script.ResetChecks()
+function Script.ResetChecks() -- var reset func
 	Script.KEnd = nil
 	Script.WEnd = nil
 	Script.KSitting = nil
@@ -76,7 +75,7 @@ function Script.ResetChecks()
 end
 
 function Script.Warg_Update(Unit, mapScript, timeDiff)
-	if Script.InactiveTimer == true then
+	if Script.InactiveTimer == true then 					-- timer part
 		if not Unit:IsInCombat() then
 			Unit:UpdateTimers(timeDiff)
 			if Unit:IsTimerFinished(4321) then
@@ -84,36 +83,36 @@ function Script.Warg_Update(Unit, mapScript, timeDiff)
 				Script.InactiveTimer = nil
 			end
 		end
-	end
+	end 													-- timer part end
 	if Script.InactiveTimer == nil then
 		if Script.Phase == 1  and Script.Khara ~= nil and not Script.Khara:IsDead() then
-			Script.Khara:PushWaypointMovement(1006)
-			Script.Khara:SendScriptTextById(11, 340)
+			Script.Khara:PushWaypointMovement(1006) -- go inside to cook
+			Script.Khara:SendScriptTextById(11, 340) -- ask warg for dinner
 			Script.InactiveTimer = false
-			Script.Phase = 2
+			Script.Phase = 2 
 			return
 		end
 		if Script.Phase == 3 then
-			Unit:SendScriptTextById(11, Script.Option1[math.random(5)])
-			Unit:PushWaypointMovement(1007)
-			Unit:SetStandState(0) 	
+			Unit:SendScriptTextById(11, Script.Option1[math.random(5)]) -- dinner was good
+			Unit:PushWaypointMovement(1007) -- go outside to fish
+			Unit:SetStandState(0) -- stand up
 			Script.InactiveTimer = false
 			Script.Phase = 4
 			return
 		end
 		if Script.Phase == 5 then
-			Unit:SendScriptTextById(11, Script.Option2[math.random(6)])
+			Unit:SendScriptTextById(11, Script.Option2[math.random(6)]) -- talk about the fishing condition
 			Unit:ResetTimer(4321, 20000)
 			Script.InactiveTimer = true
 			return
 		end
-		if Script.Phase == 6 then
-			Unit:MoveHome()
-			Unit:SetSheathState(0)
+		if Script.Phase == 6 then -- end of Warg Script
+			Unit:MoveHome() -- go to OG spot
+			Unit:SetSheathState(0)	-- unequip fishing pole
 			Script.InactiveTimer = false
-			Script.WEnd = true
-			if Script.KEnd == true then
-				Unit:ResetTimer(4321, 30000)
+			Script.WEnd = true	-- mark end of Warg script
+			if Script.KEnd == true then -- checking if Khara script has ended to reset
+				Unit:ResetTimer(4321, 120000) -- time till next loop
 				Script.InactiveTimer = true
 				Script.Phase = 0
 				Script.ResetChecks()
@@ -124,36 +123,36 @@ function Script.Warg_Update(Unit, mapScript, timeDiff)
 end
 
 function Script.Warg_OnReachWaypoint(Unit, WaypointId)
-	if Script.Phase == 2 then
+	if Script.Phase == 2 then -- going inside
 		if WaypointId == 4 then
 			Script.WSitting = true
-			Unit:SetStandState(1)
-			Unit:ResetMovement()
-			Unit:SetFacing(1.53)
-			Unit:SendScriptTextById(11,345)
-			if Script.KSitting == true then
-				Unit:CastSpell(Unit, 433, false)
+			Unit:SetStandState(1) -- sit down
+			Unit:ResetMovement() 
+			Unit:SetFacing(1.53) -- face the table
+			Unit:SendScriptTextById(11,345) -- say it smells delicious
+			if Script.KSitting == true then -- check if khara is sitting down so they can start eating
+				Unit:CastSpell(Unit, 433, false) -- eat
 				if Script.Khara ~= nil then
-					Script.Khara:CastSpell(Unit, 433, false)
+					Script.Khara:CastSpell(Unit, 433, false) -- make khara eat
 				end
-				Unit:ResetTimer(4321,30000)
+				Unit:ResetTimer(4321,25000)
 				Script.InactiveTimer = true
 			end
 			return
 		end
 	end
-	if Script.Phase == 4 then
+	if Script.Phase == 4 then -- going oustside
 		if WaypointId == 5 then
-			Unit:SetSheathState(1)
+			Unit:SetSheathState(1) -- grab and equip pole
 			if Script.Khara ~= nil then
-				Script.Khara:PushWaypointMovement(1008)
-				Script.Khara:SetStandState(0)
+				Script.Khara:PushWaypointMovement(1008) -- Khara goes outside too
+				Script.Khara:SetStandState(0) -- make sure she stands up throughout her trip outside
 			end
 			return
 		end
 		if WaypointId == 7 then
-			Unit:ResetMovement()
-			Unit:SendScriptTextById(13,352)
+			Unit:ResetMovement() -- stop by the water
+			Unit:SendScriptTextById(13,352) -- look out to the water
 			Unit:ResetTimer(4321,12000)
 			Script.InactiveTimer = true
 		end
@@ -161,52 +160,50 @@ function Script.Warg_OnReachWaypoint(Unit, WaypointId)
 end
 
 function Script.Khara_OnReachWaypoint(Unit, WaypointId)
-	if Script.Phase == 2 then
-		if WaypointId == 1 then
-			Unit:SetEmoteState(0)
-			return
-		end
+	if Script.Phase == 2 then	-- going inside
 		if WaypointId == 3 then
-			Unit:SendScriptTextById(13, 341)
-			Unit:CastSpell(Unit, 1804, false)
+			Unit:SendScriptTextById(13, 341) -- hum a song
+			Unit:CastSpell(Unit, 1804, false) -- cook
 			return
 		end
 		if WaypointId == 4 then
-			Unit:CastSpell(Unit, 1804, false)
+			Unit:CastSpell(Unit, 1804, false) -- cook
 			return
 		end
 		if WaypointId == 5 then
-			Unit:SendScriptTextById(11, 342)
-			Unit:SendEmote(16)
+			Unit:SendScriptTextById(11, 342) -- call Warg for dinner
+			Unit:SendEmote(16) -- kneel to pick up dinner
 			return
 		end
 		if WaypointId == 6 then 
 			if Script.Warg ~= nil then
-				Script.Warg:PushWaypointMovement(1005)
-				Script.Warg:SendScriptTextById(11,344)
+				Script.Warg:PushWaypointMovement(1005) -- Warg going inside 
+				Script.Warg:SendScriptTextById(11,344) -- Warg saying hes comming
 			end
 			return
 		end
 		if WaypointId == 8 then
-			Unit:SetStandState(1)
-			Unit:ResetMovement()
-			Unit:SetFacing(3.213)
-			Script.KSitting = true
+			Unit:SetStandState(1) -- sit down
+			Unit:ResetMovement() -- stop waypoint movement
+			Unit:SetFacing(3.213)	-- face the table
+			Script.KSitting = true -- check if Warg is sitting
 			if Script.WSitting == true then
-				Script.Warg:CastSpell(Unit, 433, false)
-				Unit:CastSpell(Unit, 433, false)
-				Script.Warg:ResetTimer(4321,20000)
+				if Script.Warg ~= nil then
+					Script.Warg:CastSpell(Unit, 433, false) -- make warg eat
+				end
+				Unit:CastSpell(Unit, 433, false)  -- eat
+				Script.Warg:ResetTimer(4321,25000)
 				Script.InactiveTimer = true
 				return
 			end
 		end
 	end
-	if Script.Phase ~= 2 then
+	if Script.Phase ~= 2 then -- going outside
 		if WaypointId == 5 then
 			Unit:ResetMovement()
-			Script.KEnd = true
-			if Script.WEnd == true then
-				Script.Warg:ResetTimer(4321, 30000)
+			Script.KEnd = true -- mark end of Khara script
+			if Script.WEnd == true then -- check if Warg ended his script
+				Script.Warg:ResetTimer(4321, 120000) -- reset till next loop
 				Script.Phase = 0
 				Script.InactiveTimer = true
 				Script.ResetChecks()
@@ -214,7 +211,6 @@ function Script.Khara_OnReachWaypoint(Unit, WaypointId)
 		end
 	end
 end
-
 
 RegisterUnitEvent(1683, 1, Script.Warg_Spawn)
 RegisterUnitEvent(1683, 2, Script.Warg_Death)
@@ -266,6 +262,7 @@ warg by the water
 
 
 
+[SQL]
 
 update kt_world.locale_broadcast_text set EN_FemaleText = EN_MaleText, RU_FemaleText = RU_MaleText, DE_FemaleText = DE_MaleText, FR_FemaleText = FR_MaleText, CN_FemaleText = CN_MaleText where id in (340,342);
 delete from kt_world.waypoint_script where scriptentry = 1005;
@@ -309,6 +306,8 @@ replace into kt_script.event_trigger_data set triggerid = 1007, eventtype = 5, E
 update kt_world.creature_spawns set unitBytes2 = 0 where entry = 1683;
 
 update kt_world.creature_proto set EquipItem0 = 6256 where entry = 1683;
+
+[SQL END]
 
 IGNORE THIS
 kids playing outside an inn
