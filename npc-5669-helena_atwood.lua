@@ -22,10 +22,11 @@ end
 function Script.Helena_Update(Unit, mapScript, timeDiff)
 	if Script.Shoot == false then
 		Script.ShootC = Script.ShootC + 1
-		if Script.ShootC == 14 then
+		if Script.ShootC == 13 then
 			Script.Shoot = true
 			Script.ShootC = 0
 		end
+		return
 	end
 	if Script.Shoot == true then
 		Unit:CastSpell(Script.Target,7918,false)
