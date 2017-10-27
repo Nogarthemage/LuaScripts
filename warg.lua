@@ -9,6 +9,24 @@ Script.Option1 = {343,346,347,348,349}
 Script.Option2 = {350,353,356,357,358,359}
 
 
+function Script.Khara_Spawn(Unit)
+	Script.Phase = 0
+	Script.Khara = Unit
+	Unit:ResetMovement()
+	Unit:SetStandState(0)
+	Script.InactiveTimer = true
+end
+
+function Script.Warg_Spawn(Unit)
+	math.randomseed(os.time())
+	Unit:SetStandState(0)
+	Unit:ResetMovement()
+	Script.Warg = Unit
+	Script.InactiveTimer = true
+	Script.Phase = 0
+	Unit:CreateTimer(4321, 2500)
+end
+
 function Script.Warg_Death(Unit)
 	Script.Phase = nil
 	Unit:RemoveTimer(4321)
@@ -44,22 +62,16 @@ function Script.Khara_Death(Unit)
 	Script.WSitting = nil
 end
 
-function Script.Khara_Spawn(Unit)
-	Script.Phase = 0
-	Script.Khara = Unit
-	Unit:ResetMovement()
-	Unit:SetStandState(0)
-	Script.InactiveTimer = true
+function Script.Warg_LeaveCombat(Unit)
+	if Script.Phase == nil then
+		Unit:MoveHome()
+	end
 end
 
-function Script.Warg_Spawn(Unit)
-	math.randomseed(os.time())
-	Unit:SetStandState(0)
-	Unit:ResetMovement()
-	Script.Warg = Unit
-	Script.InactiveTimer = true
-	Script.Phase = 0
-	Unit:CreateTimer(4321, 2500)
+function Script.Khara_LeaveCombat(Unit)
+	if Script.Phase == 0 then
+		Unit:MoveHome()
+	end
 end
 
 function Script.Warg_Update(Unit, mapScript, timeDiff)
@@ -209,12 +221,14 @@ function Script.Khara_OnReachWaypoint(Unit, WaypointId)
 end
 
 
-RegisterUnitEvent(1683, 23, Script.Warg_Update)
 RegisterUnitEvent(1683, 1, Script.Warg_Spawn)
-RegisterUnitEvent(1684, 1, Script.Khara_Spawn)
 RegisterUnitEvent(1683, 2, Script.Warg_Death)
-RegisterUnitEvent(1684, 2, Script.Khara_Death)
+RegisterUnitEvent(1683, 2, Script.Warg_LeaveCombat)
 RegisterUnitEvent(1683, 14, Script.Warg_OnReachWaypoint)
+RegisterUnitEvent(1683, 23, Script.Warg_Update)
+RegisterUnitEvent(1684, 1, Script.Khara_Spawn)
+RegisterUnitEvent(1684, 2, Script.Khara_Death)
+RegisterUnitEvent(1684, 4, Script.Khara_LeaveCombat)
 RegisterUnitEvent(1684, 14, Script.Khara_OnReachWaypoint)
 	
 
