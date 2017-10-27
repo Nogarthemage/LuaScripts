@@ -215,7 +215,7 @@ end
 
 RegisterUnitEvent(1683, 1, Script.Warg_Spawn)
 RegisterUnitEvent(1683, 2, Script.Warg_Death)
-RegisterUnitEvent(1683, 2, Script.Warg_LeaveCombat)
+RegisterUnitEvent(1683, 4, Script.Warg_LeaveCombat)
 RegisterUnitEvent(1683, 14, Script.Warg_OnReachWaypoint)
 RegisterUnitEvent(1683, 23, Script.Warg_Update)
 RegisterUnitEvent(1684, 1, Script.Khara_Spawn)
