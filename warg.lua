@@ -39,10 +39,7 @@ function Script.Warg_Death(Unit)
 		Script.Khara:SetStandState(0)
 	end
 	Script.InactiveTimer = false
-	Script.KEnd = nil
-	Script.WEnd = nil
-	Script.KSitting = nil
-	Script.WSitting = nil
+	Script.ResetChecks()
 end
 
 function Script.Khara_Death(Unit)
@@ -56,10 +53,7 @@ function Script.Khara_Death(Unit)
 		Script.Warg:SetStandState(0)
 	end
 	Script.InactiveTimer = false
-	Script.KEnd = nil
-	Script.WEnd = nil
-	Script.KSitting = nil
-	Script.WSitting = nil
+	Script.ResetChecks()
 end
 
 function Script.Warg_LeaveCombat(Unit)
@@ -74,6 +68,13 @@ function Script.Khara_LeaveCombat(Unit)
 	end
 end
 
+function Script.ResetChecks()
+	Script.KEnd = nil
+	Script.WEnd = nil
+	Script.KSitting = nil
+	Script.WSitting = nil
+end
+
 function Script.Warg_Update(Unit, mapScript, timeDiff)
 	if Script.InactiveTimer == true then
 		if not Unit:IsInCombat() then
@@ -84,7 +85,6 @@ function Script.Warg_Update(Unit, mapScript, timeDiff)
 			end
 		end
 	end
-	if Script.InactiveTimer == false then return end
 	if Script.InactiveTimer == nil then
 		if Script.Phase == 1  and Script.Khara ~= nil and not Script.Khara:IsDead() then
 			Script.Khara:PushWaypointMovement(1006)
@@ -116,10 +116,7 @@ function Script.Warg_Update(Unit, mapScript, timeDiff)
 				Unit:ResetTimer(4321, 30000)
 				Script.InactiveTimer = true
 				Script.Phase = 0
-				Script.KEnd = nil
-				Script.WEnd = nil
-				Script.KSitting = nil
-				Script.WSitting = nil
+				Script.ResetChecks()
 			end
 			return
 		end
@@ -200,6 +197,7 @@ function Script.Khara_OnReachWaypoint(Unit, WaypointId)
 				Unit:CastSpell(Unit, 433, false)
 				Script.Warg:ResetTimer(4321,20000)
 				Script.InactiveTimer = true
+				return
 			end
 		end
 	end
@@ -211,10 +209,7 @@ function Script.Khara_OnReachWaypoint(Unit, WaypointId)
 				Script.Warg:ResetTimer(4321, 30000)
 				Script.Phase = 0
 				Script.InactiveTimer = true
-				Script.KEnd = nil
-				Script.WEnd = nil
-				Script.KSitting = nil
-				Script.WSitting = nil
+				Script.ResetChecks()
 			end
 		end
 	end
