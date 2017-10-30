@@ -13,7 +13,7 @@ function Script.Lord_Death(Unit)
 end
 
 function Script.Marzon_Spawn(Unit)
-	Unit:CastSpell(Unit,1785,false)
+	Unit:CastSpell(Unit, 1784,false)
 end
 
 function Script.Marzon_Death(Unit)
@@ -21,6 +21,7 @@ function Script.Marzon_Death(Unit)
 end
 
 function Script.Lord_Spawn(Unit)
+	Unit:MoveHome()
 	Script.Lord = Unit
 	Unit:CreateTimer(4321,1000)
 end
@@ -63,7 +64,7 @@ function Script.Reset()
 		Script.Tyrion:MoveHome()
 		Script.Tyrion:SetCanEnterCombat(true)
 	end
-	if Script.Lord ~= nil then
+	if Script.Lord then
 		Script.Lord:ResetMovement()
 		Script.Lord:ClearTemporaryFaction()
 	end
@@ -277,6 +278,9 @@ function Script.Lord_Update(Unit, mapScript, timeDiff)
 			return
 		end
 		if Script.Phase == 18 then
+			if Script.Guard then
+				Unit:FaceTarget(Script.Guard1)
+			end
 			Unit:SendScriptTextById(11,322)
 			Unit:SendEmote(1)
 			Unit:ResetTimer(4321,2000)
@@ -329,10 +333,9 @@ function Script.Lord_Update(Unit, mapScript, timeDiff)
 			return
 		end
 		if Script.Phase == 24 then
-			--Unit:SetFacing(1.80)
-			Script.Marzon:RemoveAura(1785)
 			if Script.Marzon then
 				Unit:FaceTarget(Script.Marzon)
+				Script.Marzon:RemoveAura(1784)
 			end
 			Unit:SendScriptTextById(11,323)
 			Unit:SendEmote(1)
@@ -424,22 +427,19 @@ end
 
 function Script.Lord_ReachWaypoint(Unit, WaypointId)
 	if WaypointId == 6 then
-		Unit:SetFacing()
 		Unit:ResetTimer(4321,1000)
 		Script.InactiveTimerL = true
+		return
 	end
 	if WaypointId == 7 then
-		Unit:ResetMovement()
 		Unit:StopMovement()
-		Unit:ResetTimer(4321,1000)
+		Unit:ResetMovement()
+		Unit:ResetTimer(4321,500)
 		Script.InactiveTimerL = true
 	end
 end
 
 function Script.Marzon_ReachWaypoint(Unit, WaypointId)
-	if WaypointId == 1 then
-		Unit:CastSpell(Unit,1785,false)
-	end
 	if WaypointId == 3 then
 		Unit:ResetMovement()
 		Unit:StopMovement()
@@ -466,40 +466,12 @@ RegisterUnitEvent(7766, 16, Script.Tyrion_QuestAccept)
 --[[
 
 
-
-
 update kt_world.creature_Proto set faction = 35 where entry = 1755;
 delete from kt_world.creature_spawns where entry in (7779);
 update kt_world.creature_proto set RespawnTime = 0 where entry = 1755;
 
 update kt_world.creature_spawns set position_x = -8408.056641,position_y = 450.679932,position_z = 123.760002, orientation = 6.282 where entry = 7766;
 update kt_world.creature_spawns set position_x = -8408.855469,position_y = 452.049622,position_z = 123.760002, orientation = 5.632 where entry = 8856;
-
-322	7	0	It's time for my meditation, leave me.
-323	7	0	There you are. What news from Westfall?
-324	7	0	VanCleef sends word that the plans are underway. But he's heard rumors about someone snooping about.
-325	7	0	Very well. I will return then.
-326	7	0	Hmm, it could be that meddler Shaw. I will see what I can discover. Be off with you. I'll contact you again soon.
-
-3690	0	0	Yes, sir!
-3721	0	0	%s waits for the guards to be out of sight.
-3761	0	0	Wait here, $n. Spybot will make Lescovar come out as soon as possible. Be ready! Attack only after you've overheard their conversation.
-3762	0	0	Milord, your guest has arrived. He awaits your presence.
-3781	0	0	Good day to you both. I would speak to Lord Lescovar.
-3782	0	0	Thank you. The Light be with you both.
-3783	0	0	Of course. He awaits you in the library.
-3784	0	0	Ah, thank you kindly. I will leave you to the library while I tend to this small matter.
-3785	0	0	Ok, here I go!
-3791	0	0	I shall use the time wisely, milord. Thank you.
-
-4613	0	0	That's it! That's what you were waiting for! KILL THEM!
-4593	0	0	By your command!
-
-3936	0	0	The Defias shall succeed! No meek adventurer will stop us!
-3934	0	0	What?! How dare you!
-
-update kt_world.locale_broadcast_text set EN_FemaleText = EN_MaleText, RU_FemaleText = RU_MaleText, DE_FemaleText = DE_MaleText, FR_FemaleText = FR_MaleText, CN_FemaleText = CN_MaleText where id in (3791);
-
 
 delete from kt_world.waypoint_script where scriptentry = 1009;
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1009,1,0,0,-8411.648438,460.652252,123.760002,0,0,'');
@@ -560,10 +532,28 @@ insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, 
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1013,3,0,10000,-8404.900391,469.425964,123.759811,0,0,'');
 
 
-(V1,V2,1,V3,V4,-8405.426758,487.028595,123.760399,V5,V6,'');
-(V1,V2,2,V3,V4,-8407.740234,479.508453,123.760399,V5,V6,'');
-(V1,V2,3,V3,V4,-8404.900391,469.425964,123.759811,V5,V6,'');
+322	7	0	It's time for my meditation, leave me.
+323	7	0	There you are. What news from Westfall?
+324	7	0	VanCleef sends word that the plans are underway. But he's heard rumors about someone snooping about.
+325	7	0	Very well. I will return then.
+326	7	0	Hmm, it could be that meddler Shaw. I will see what I can discover. Be off with you. I'll contact you again soon.
 
+3690	0	0	Yes, sir!
+3721	0	0	%s waits for the guards to be out of sight.
+3761	0	0	Wait here, $n. Spybot will make Lescovar come out as soon as possible. Be ready! Attack only after you've overheard their conversation.
+3762	0	0	Milord, your guest has arrived. He awaits your presence.
+3781	0	0	Good day to you both. I would speak to Lord Lescovar.
+3782	0	0	Thank you. The Light be with you both.
+3783	0	0	Of course. He awaits you in the library.
+3784	0	0	Ah, thank you kindly. I will leave you to the library while I tend to this small matter.
+3785	0	0	Ok, here I go!
+3791	0	0	I shall use the time wisely, milord. Thank you.
+
+4613	0	0	That's it! That's what you were waiting for! KILL THEM!
+4593	0	0	By your command!
+
+3936	0	0	The Defias shall succeed! No meek adventurer will stop us!
+3934	0	0	What?! How dare you!
 
 
 --]]
