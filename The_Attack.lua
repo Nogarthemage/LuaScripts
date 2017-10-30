@@ -272,8 +272,8 @@ function Script.Lord_Update(Unit, mapScript, timeDiff)
 				Script.Marzon:Despawn(1000,0)
 			end
 			Unit:ClearTemporaryFaction()
-			Unit:Despawn(30000,1000)
 			Script.Reset()
+			Unit:Despawn(1000,1000)
 			return
 		end
 		if Script.Phase == 18 then
@@ -329,7 +329,7 @@ function Script.Lord_Update(Unit, mapScript, timeDiff)
 			return
 		end
 		if Script.Phase == 24 then
-			Unit:SetFacing(1.80)
+			--Unit:SetFacing(1.80)
 			Script.Marzon:RemoveAura(1785)
 			if Script.Marzon then
 				Unit:FaceTarget(Script.Marzon)
@@ -369,7 +369,7 @@ function Script.Lord_Update(Unit, mapScript, timeDiff)
 			Script.InactiveTimerL = true
 			return
 		end
-		if Script.Phase == 28 then 
+		if Script.Phase == 28 then
 			if Script.Tyrion then
 				Script.Tyrion:SendScriptTextById(12,4613)
 				Script.Tyrion:SendEmote(5)
@@ -379,8 +379,8 @@ function Script.Lord_Update(Unit, mapScript, timeDiff)
 				Script.Marzon:SetTemporaryFaction(17)
 			end
 			Script.Phase = 29
-			Unit:ResetTimer(4321,90000)
-			Script.InactiveTimer = nil
+			Script.Bot:ResetTimer(4321,90000)
+			Script.InactiveTimer = true
 			return
 		end
 	end
@@ -413,7 +413,7 @@ function Script.Bot_ReachWaypoint(Unit, WaypointId)
 			Unit:CastSpell(Unit,1785,false)
 			return
 		end
-		if WaypointId == 17 then
+		if WaypointId == 16 then
 			Unit:ResetMovement()
 			Unit:StopMovement()
 			Unit:Despawn(5000,1000)
@@ -430,6 +430,7 @@ function Script.Lord_ReachWaypoint(Unit, WaypointId)
 	end
 	if WaypointId == 7 then
 		Unit:ResetMovement()
+		Unit:StopMovement()
 		Unit:ResetTimer(4321,1000)
 		Script.InactiveTimerL = true
 	end
@@ -522,8 +523,7 @@ insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, 
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1010,13,0,2000,-8423.702148,443.715790,122.274498,0,0,'');
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1010,14,0,0,-8423.702148,443.715790,122.274498,0,0,'');
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1010,15,0,0,-8427.382813,448.360016,122.274498,0,0,'');
-insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1010,16,0,0,-8433.605469,443.533661,122.274498,0,0,'');
-insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1010,17,0,2000,-8472.669922,412.507690,111.363945,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1010,16,0,2000,-8433.605469,443.533661,122.274498,0,0,'');
 
 delete from kt_world.waypoint_script where scriptentry = 1011;
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1011,1,0,0,-8334.000000,394.721985,122.274002,0,0,'');
