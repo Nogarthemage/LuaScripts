@@ -12,6 +12,10 @@ function Script.Lord_Death(Unit)
 	Script.LordDead = true
 end
 
+function Script.Marzon_Spawn(Unit)
+	Unit:CastSpell(Unit,1785,false)
+end
+
 function Script.Marzon_Death(Unit)
 	Script.MarzonDead = true
 end
@@ -33,12 +37,57 @@ function Script.Tyrion_Spawn(Unit)
 end
 
 
+function Script.Lord_Init(Unit, Attacker)
+	Unit:SendScriptTextById(11,3934)
+end
+
+function Script.Marzon_Init(Unit, Attacker)
+	Unit:SendScriptTextById(11,3936)
+end
+
+function Script.Reset()
+	if Script.Guard1 and Script.Guard2 then
+		Script.Guard1:StopMovement()
+		Script.Guard2:StopMovement()
+		Script.Guard1:ResetMovement()
+		Script.Guard2:ResetMovement()
+		Script.Guard1:SetCanEnterCombat(true)
+		Script.Guard2:SetCanEnterCombat(true)
+		Script.Guard1:Despawn(3000,2000)
+		Script.Guard2:Despawn(3000,2000)
+	end
+	if Script.Guard3 then
+		Script.Guard3:SetCanEnterCombat(true)
+	end
+	if Script.Tyrion then
+		Script.Tyrion:MoveHome()
+		Script.Tyrion:SetCanEnterCombat(true)
+	end
+	if Script.Lord ~= nil then
+		Script.Lord:ResetMovement()
+		Script.Lord:ClearTemporaryFaction()
+	end
+	if Script.Bot then
+		Script.Bot:SetCanEnterCombat(true)
+		Script.Bot:StopMovement()
+		Script.Bot:ResetMovement()
+		Script.Bot:Despawn(10000,1000)
+	end
+	Script.LordDead = nil
+	Script.MarzonDead = nil
+	Script.InactiveTimerL = nil
+	Script.InactiveTimer = nil
+	Script.Phase = nil
+end
+
+
 function Script.Tyrion_QuestAccept(Unit, QuestId, Player)
-	--if QuestId == 434
+	if QuestId == 434 then
 		Script.Guard1 = Unit:GetCreatureBySqlId(10305)
 		Script.Guard2 = Unit:GetCreatureBySqlId(10304)
 		Script.Guard3 = Unit:GetCreatureBySqlId(10309)
-		Script.Player = QuestId -- Player
+		Script.Player = Player -- Player
+		Script.QLogE = Player:GetQuestLogEntry(434)
 		Unit:SetCanEnterCombat(false)
 		if Script.Bot then
 			Script.Bot:SetCanEnterCombat(false)
@@ -48,7 +97,7 @@ function Script.Tyrion_QuestAccept(Unit, QuestId, Player)
 		Script.Phase = 0
 		Unit:SetFacing(2.058)
 		Unit:CastSpell(Unit,1804,false)
-	--end
+	end
 end
 
 
@@ -67,7 +116,6 @@ function Script.Bot_Update(Unit, mapScript, timeDiff)
 		if Script.Phase == 1 then
 			if Script.Tyrion then
 				Script.Tyrion:FaceTarget(Unit)
-				Script.Tyrion:SendEmote(1)
 			end
 			Unit:ResetTimer(4321,1500)
 			Script.InactiveTimer = true
@@ -143,6 +191,7 @@ function Script.Bot_Update(Unit, mapScript, timeDiff)
 					Script.Guard1:SendScriptTextById(11,3783)
 					Script.Guard1:SetStandState(26)
 					Script.Guard2:SetStandState(26)
+					Script.Guard1:SendEmote(1)
 				end
 			end
 			Unit:ResetTimer(4321,2500)
@@ -212,73 +261,20 @@ function Script.Lord_Update(Unit, mapScript, timeDiff)
 	if Script.InactiveTimerL == false then
 		if Script.Phase == 29 then 
 			if Script.MarzonDead == true and Script.LordDead == true then
-				if Script.Guard1 and Script.Guard2 then
-					Script.Guard1:StopMovement()
-					Script.Guard2:StopMovement()
-					Script.Guard1:ResetMovement()
-					Script.Guard2:ResetMovement()
-					Script.Guard1:SetCanEnterCombat(true)
-					Script.Guard2:SetCanEnterCombat(true)
-					Script.Guard1:Despawn(3000,2000)
-					Script.Guard2:Despawn(3000,2000)
-				end
-				if Script.Guard3 then
-					Script.Guard3:SetCanEnterCombat(true)
-				end
-				if Script.Tyrion then
-					Script.Tyrion:MoveHome()
-					Script.Tyrion:SetCanEnterCombat(true)
-				end
 				Unit:ClearTemporaryFaction()
 				Unit:Despawn(30000,1000)
-				if Script.Bot then
-					Script.Bot:SetCanEnterCombat(true)
-					Script.Bot:ResetMovement()
-					Script.Bot:Despawn(10000,1000)
-				end
-				if Script.Marzon then
-					Script.Marzon:Despawn(1000,0)
-				end
-				Script.LordDead = nil
-				Script.MarzonDead = nil
-				Script.InactiveTimerL = nil
-				Script.Phase = nil
+				Script.Reset()
 			end
 			return
 		end
-		if Script.Phase == 29 then 
-			if Script.Guard1 and Script.Guard2 then
-					Script.Guard1:StopMovement()
-					Script.Guard2:StopMovement()
-					Script.Guard1:ResetMovement()
-					Script.Guard2:ResetMovement()
-					Script.Guard1:SetCanEnterCombat(true)
-					Script.Guard2:SetCanEnterCombat(true)
-					Script.Guard1:Despawn(3000,2000)
-					Script.Guard2:Despawn(3000,2000)
-				end
-				if Script.Guard3 then
-					Script.Guard3:SetCanEnterCombat(true)
-				end
-				if Script.Tyrion then
-					Script.Tyrion:MoveHome()
-					Script.Tyrion:SetCanEnterCombat(true)
-				end
-				Unit:ClearTemporaryFaction()
-				Unit:Despawn(30000,1000)
-				if Script.Bot then
-					Script.Bot:SetCanEnterCombat(true)
-					Script.Bot:ResetMovement()
-					Script.Bot:Despawn(10000,1000)
-				end
-				if Script.Marzon then
-					Script.Marzon:Despawn(1000,0)
-				end
-				Script.LordDead = nil
-				Script.MarzonDead = nil
-				Script.InactiveTimerL = nil
-				Script.Phase = nil
+		if Script.Phase == 30 then 
+			if Script.Marzon then
+				Script.Marzon:Despawn(1000,0)
 			end
+			Unit:ClearTemporaryFaction()
+			Unit:Despawn(30000,1000)
+			Script.Reset()
+			return
 		end
 		if Script.Phase == 18 then
 			Unit:SendScriptTextById(11,322)
@@ -312,6 +308,7 @@ function Script.Lord_Update(Unit, mapScript, timeDiff)
 					Script.Guard2:PushWaypointMovement(1012)
 				end
 			end
+			Script.Marzon = Unit:SpawnCreatureAtPosition(1755, -8405.426758,487.028595,123.760399, 5.03)
 			Script.Phase = 21
 			return
 		end
@@ -319,24 +316,20 @@ function Script.Lord_Update(Unit, mapScript, timeDiff)
 			if Script.Tyrion then
 				Script.Tyrion:FaceTarget(Unit)
 			end
-			Script.Marzon = Unit:SpawnCreatureAtPosition(1755, -8408.423828,480.462860,123.760307, 5.03)
-			if Script.Marzon then
-				Script.Marzon:CastSpell(Script.Marzon,1785,false)
-			end
 			Unit:ResetTimer(4321,500)
 			Script.InactiveTimerL = true
 			return
 		end
 		if Script.Phase == 23 then
 			if Script.Marzon then
-				Script.Marzon:MoveToLocation(-8404.900391, 469.425964, 123.760307, 5.015, false, true, true, false)
-				Script.Marzon:CastSpell(Script.Marzon,1785,false)
+				Script.Marzon:PushWaypointMovement(1013)
 			end
-			Unit:ResetTimer(4321,5500)
+			Unit:ResetTimer(4321,7000)
 			Script.InactiveTimerL = true
 			return
 		end
 		if Script.Phase == 24 then
+			Unit:SetFacing(1.80)
 			Script.Marzon:RemoveAura(1785)
 			if Script.Marzon then
 				Unit:FaceTarget(Script.Marzon)
@@ -368,6 +361,10 @@ function Script.Lord_Update(Unit, mapScript, timeDiff)
 				Script.Marzon:SendScriptTextById(11,325)
 				Script.Marzon:SendEmote(1)
 			end
+			if Script.QLogE then
+				Script.QLogE:AddKill(0,7779)
+				Script.QLogE:UpdatePlayerFields()
+			end
 			Unit:ResetTimer(4321,2000)
 			Script.InactiveTimerL = true
 			return
@@ -383,7 +380,7 @@ function Script.Lord_Update(Unit, mapScript, timeDiff)
 			end
 			Script.Phase = 29
 			Unit:ResetTimer(4321,90000)
-			Script.InactiveTimerL = true
+			Script.InactiveTimer = nil
 			return
 		end
 	end
@@ -419,6 +416,7 @@ function Script.Bot_ReachWaypoint(Unit, WaypointId)
 		if WaypointId == 17 then
 			Unit:ResetMovement()
 			Unit:StopMovement()
+			Unit:Despawn(5000,1000)
 			return
 		end
 	end
@@ -432,23 +430,36 @@ function Script.Lord_ReachWaypoint(Unit, WaypointId)
 	end
 	if WaypointId == 7 then
 		Unit:ResetMovement()
-		Unit:StopMovement()
 		Unit:ResetTimer(4321,1000)
 		Script.InactiveTimerL = true
 	end
 end
 
+function Script.Marzon_ReachWaypoint(Unit, WaypointId)
+	if WaypointId == 1 then
+		Unit:CastSpell(Unit,1785,false)
+	end
+	if WaypointId == 3 then
+		Unit:ResetMovement()
+		Unit:StopMovement()
+	end
+end
 
+
+RegisterUnitEvent(1755, 1, Script.Marzon_Spawn)
+RegisterUnitEvent(1755, 2, Script.Marzon_Death)
+RegisterUnitEvent(1755, 3, Script.Marzon_Init)
+RegisterUnitEvent(1755, 14, Script.Marzon_ReachWaypoint)
 RegisterUnitEvent(1754, 1, Script.Lord_Spawn)
 RegisterUnitEvent(1754, 2, Script.Lord_Death)
-RegisterUnitEvent(1755, 2, Script.Marzon_Death)
+RegisterUnitEvent(1754, 3, Script.Lord_Init)
 RegisterUnitEvent(1754, 14, Script.Lord_ReachWaypoint)
 RegisterUnitEvent(1754, 23, Script.Lord_Update)
 RegisterUnitEvent(8856, 1, Script.Bot_Spawn)
 RegisterUnitEvent(8856, 14, Script.Bot_ReachWaypoint)
 RegisterUnitEvent(8856, 23, Script.Bot_Update)
 RegisterUnitEvent(7766, 1, Script.Tyrion_Spawn)
-RegisterUnitEvent(7766, 18, Script.Tyrion_QuestAccept) --16
+RegisterUnitEvent(7766, 16, Script.Tyrion_QuestAccept)
 
 
 --[[
@@ -482,6 +493,9 @@ update kt_world.creature_spawns set position_x = -8408.855469,position_y = 452.0
 
 4613	0	0	That's it! That's what you were waiting for! KILL THEM!
 4593	0	0	By your command!
+
+3936	0	0	The Defias shall succeed! No meek adventurer will stop us!
+3934	0	0	What?! How dare you!
 
 update kt_world.locale_broadcast_text set EN_FemaleText = EN_MaleText, RU_FemaleText = RU_MaleText, DE_FemaleText = DE_MaleText, FR_FemaleText = FR_MaleText, CN_FemaleText = CN_MaleText where id in (3791);
 
@@ -540,6 +554,15 @@ insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, 
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1012,17,0,0,-8328.985352,526.225647,122.274696,0,0,'');
 insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1012,18,0,0,-8341.941406,528.008057,122.275581,0,0,'');
 
+delete from kt_world.waypoint_script where scriptentry = 1013;
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1013,1,0,0,-8405.426758,487.028595,123.760399,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1013,2,0,0,-8407.740234,479.508453,123.760399,0,0,'');
+insert into waypoint_script (ScriptEntry, waypointId, movetype, delay, x, y, z, o, actionid, note) VALUES(1013,3,0,10000,-8404.900391,469.425964,123.759811,0,0,'');
+
+
+(V1,V2,1,V3,V4,-8405.426758,487.028595,123.760399,V5,V6,'');
+(V1,V2,2,V3,V4,-8407.740234,479.508453,123.760399,V5,V6,'');
+(V1,V2,3,V3,V4,-8404.900391,469.425964,123.759811,V5,V6,'');
 
 
 
